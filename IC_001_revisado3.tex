@@ -1,0 +1,163 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\newcounter{algoritmo}
+\newenvironment{algoritmo}[1]{%
+  \refstepcounter{algoritmo}%
+  \par\medskip\noindent\textbf{Algoritmo~\thealgoritmo~-- #1}\par\smallskip
+  \small
+}{%
+  \par\normalsize\medskip
+}
+
+\usepackage{hyperref}
+
+\DeclareUnicodeCharacter{00B7}{\ensuremath{\cdot}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+\DeclareUnicodeCharacter{2032}{\ensuremath{\prime}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2208}{\ensuremath{\in}}
+\DeclareUnicodeCharacter{2211}{\ensuremath{\sum}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{221E}{\ensuremath{\infty}}
+\DeclareUnicodeCharacter{222B}{\ensuremath{\int}}
+\DeclareUnicodeCharacter{223C}{\ensuremath{\sim}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{2282}{\ensuremath{\subset}}
+\DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}
+\DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}
+
+\lstdefinestyle{codigoIC}{%
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!60!black},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=6pt,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=2,
+  showstringspaces=false,
+  captionpos=b
+}
+
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0.2cm}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{proposicao}{Proposição}[section]
+\renewcommand{\proofname}{Demonstração}
+
+\newcommand{\instituicao}{Nome da Instituição}
+\newcommand{\curso}{Nome do Curso ou Departamento}
+\newcommand{\autor}{Seu Nome Completo}
+\newcommand{\titulo}{Soluções Periódicas e Métodos Espectrais para Equações Diferenciais}
+\newcommand{\orientador}{Nome do(a) Orientador(a)}
+\newcommand{\cidade}{Cidade}
+\newcommand{\ano}{2026}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+  \begin{center}
+    {\large \instituicao \par}
+    \vspace{0.4cm}
+    {\large \curso \par}
+    \vfill
+    {\Large \autor \par}
+    \vspace{1.5cm}
+    {\LARGE \textbf{\titulo} \par}
+    \vfill
+    {\large Orientador(a): \orientador \par}
+    \vfill
+    {\large \cidade \par}
+    {\large \ano \par}
+  \end{center}
+\end{titlepage}
+
+\begin{titlepage}
+  \begin{center}
+    {\large \autor \par}
+    \vspace{1.5cm}
+    {\LARGE \textbf{\titulo} \par}
+  \end{center}
+
+  \vfill
+
+  \begin{flushright}
+    \begin{minipage}{0.58\textwidth}
+      Projeto de Iniciação Científica apresentado a \instituicao, no âmbito de \curso, como requisito para seleção e desenvolvimento de pesquisa.
+    \end{minipage}
+  \end{flushright}
+
+  \vspace{1.2cm}
+
+  \begin{center}
+    {\large Orientador(a): \orientador \par}
+    \vfill
+    {\large \cidade \par}
+    {\large \ano \par}
+  \end{center}
+\end{titlepage}
+
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+
+\section*{Resumo}
+Este trabalho investiga a formulação e a aproximação numérica de soluções periódicas de equações diferenciais, com ênfase na combinação entre séries de Fourier na variável temporal e métodos espectrais de Chebyshev na variável espacial. Inicialmente, são apresentados fundamentos sobre periodicidade, séries de Fourier, polinômios ortogonais e colocação espectral. Em seguida, desenvolve-se a formulação modal que transforma problemas periódicos no tempo em sistemas lineares associados aos modos de Fourier. A metodologia é validada em um sistema linear periódico de dimensão \(2\times2\) e, posteriormente, aplicada à equação do calor bidimensional com condições de contorno homogêneas de Dirichlet e periodicidade temporal. Os resultados numéricos indicam alta precisão para soluções suaves, rápida redução do erro com o refinamento espectral e a necessidade de monitorar o condicionamento dos sistemas lineares gerados.
+
+\textbf{Palavras-chave:} soluções periódicas; séries de Fourier; métodos espectrais; polinômios de Chebyshev; equação do calor.
+
+\section*{Abstract}
+This work investigates the formulation and numerical approximation of periodic solutions of differential equations, with emphasis on the combination of Fourier series in the time variable and Chebyshev spectral methods in the spatial variable. First, we present basic results on periodicity, Fourier series, orthogonal polynomials, and spectral collocation. Then, we develop the modal formulation that transforms time-periodic problems into linear systems associated with Fourier modes. The methodology is validated on a two-component linear periodic system and then applied to the two-dimensional heat equation with homogeneous Dirichlet boundary conditions and temporal periodicity. The numerical results indicate high accuracy for smooth solutions, rapid error reduction under spectral refinement, and the need to monitor the conditioning of the resulting linear systems.
+
+\textbf{Keywords:} periodic solutions; Fourier series; spectral methods; Chebyshev polynomials; heat equation.
+
+\tableofcontents
+\newpage
+
+% capítulo inicial numerado a partir de 1
+\input{cap_01_introducao}
+\input{cap_02_polinomios_ortogonais}
+\input{cap_03_series_de_fourier}
+\input{cap_04_metodos_espectrais}
+\input{cap_05_resultados}
+\appendix
+\input{cap_06_codigos_comentados}
+
+\end{document}

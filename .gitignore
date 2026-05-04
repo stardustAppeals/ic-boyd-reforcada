@@ -1,0 +1,23 @@
+﻿__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Arquivos auxiliares gerados pelo LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Sistema/editor
+.DS_Store
+Thumbs.db

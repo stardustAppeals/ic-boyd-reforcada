@@ -1,0 +1,885 @@
+\chapter{Métodos Espectrais}
+
+\section{Considerações gerais}
+
+Métodos espectrais são métodos de aproximação global nos quais a solução procurada é representada como combinação linear de funções base escolhidas de acordo com a geometria do problema. Em problemas periódicos, a escolha natural é frequentemente uma base trigonométrica; em domínios espaciais limitados, é comum empregar polinômios ortogonais, entre eles os de Legendre e os de Chebyshev.
+
+Mais precisamente, procura-se aproximar a solução por uma expressão do tipo
+\[
+u_N(x)=\sum_{k=0}^{N} a_k \,\phi_k(x),
+\]
+em que \(\{\phi_k\}\) é uma base global apropriada. Dependendo da maneira como os coeficientes \(a_k\) são determinados, surgem diferentes formulações, como os métodos de Galerkin, de tau e de colocação. No presente trabalho, a formulação de interesse é a colocação espectral na variável espacial, combinada com uma expansão de Fourier na variável temporal.
+
+É importante distinguir, desde já, dois níveis conceituais. Os polinômios de Chebyshev são uma família de polinômios ortogonais; o método numérico construído a partir deles é o método espectral de Chebyshev ou, em formulações nodais, o método de colocação de Chebyshev. Essa distinção será mantida ao longo do texto.
+
+
+
+\section{Decaimento dos coeficientes espectrais, aliasing e fenômeno de Gibbs}
+\label{sec:decaimento-aliasing-gibbs}
+
+Um dos fundamentos centrais dos métodos espectrais é a relação entre a regularidade da função aproximada e o decaimento de seus coeficientes espectrais. Em uma expansão de Fourier, por exemplo,
+\[
+f(t)\sim \sum_{k\in\mathbb{Z}}\widehat{f}_k e^{ik\omega t},
+\]
+os coeficientes \(\widehat{f}_k\) medem a contribuição de cada modo temporal de frequência \(k\omega\). Quando esses coeficientes decaem rapidamente, os modos de alta frequência têm pequena contribuição, de modo que uma soma truncada com poucos termos pode aproximar bem a função.
+
+No caso \(2\pi\)-periódico, os coeficientes são dados por
+\[
+\widehat{f}_k=
+\frac{1}{2\pi}\int_{-\pi}^{\pi}f(t)e^{-ikt}\,dt.
+\]
+Se \(f\) possui derivadas periódicas suficientes, integrações por partes sucessivas mostram que a regularidade se traduz em decaimento dos coeficientes. De modo esquemático, se \(f\) possui regularidade de ordem \(m\), obtêm-se estimativas do tipo
+\[
+|\widehat{f}_k|\leq \frac{C}{|k|^m},
+\qquad |k|\to\infty,
+\]
+para uma constante \(C>0\) apropriada. Assim, quanto maior a regularidade, mais rápido é o decaimento dos coeficientes. Em situações de maior regularidade, como no caso de funções analíticas, o decaimento pode ser exponencial.
+
+Essa propriedade explica a eficiência do truncamento espectral. Ao substituir a série completa por
+\[
+f_K(t)=\sum_{k=-K}^{K}\widehat{f}_k e^{ik\omega t},
+\]
+o erro depende essencialmente da contribuição dos modos descartados. Se os coeficientes associados a altas frequências são muito pequenos, poucos modos são suficientes para obter uma aproximação precisa. Por esse motivo, métodos espectrais tendem a apresentar convergência muito rápida para funções suaves.
+
+Uma interpretação análoga vale para expansões em polinômios de Chebyshev. Se
+\[
+u(x)\sim \sum_{n=0}^{\infty}a_nT_n(x),
+\]
+a rapidez com que os coeficientes \(a_n\) decaem está diretamente associada à regularidade de \(u\) no intervalo considerado. Funções suaves apresentam coeficientes de Chebyshev que decaem rapidamente; funções analíticas podem produzir decaimento exponencial. Essa é uma das razões pelas quais a discretização de Chebyshev é eficiente em domínios limitados, desde que a solução seja suficientemente regular.
+
+Essa discussão é relevante para os experimentos numéricos deste trabalho. No problema finito-dimensional de validação, a solução exata
+\[
+x_{\mathrm{ex}}(t)=\sin t+\cos(2t)
+\]
+possui apenas poucos harmônicos. Assim, quando o modo \(k=2\) é incluído, a representação temporal passa a conter todos os modos necessários para reconstruir a solução, e o erro decai para a ordem da precisão de máquina. No problema da equação do calor, a solução fabricada é suave nas variáveis espaciais e periódica no tempo; por isso, espera-se rápido decaimento dos coeficientes e convergência acelerada com o refinamento espectral.
+
+Apesar dessa eficiência em problemas suaves, métodos espectrais exigem cuidado com fenômenos associados à discretização. Um deles é o \emph{aliasing}. Para entender sua origem, considere uma grade uniforme periódica
+\[
+x_j=\frac{2\pi j}{N},
+\qquad j=0,1,\dots,N-1.
+\]
+Nessa grade, modos de Fourier distintos podem assumir exatamente os mesmos valores. De fato,
+\[
+e^{i(k+N)x_j}
+=
+e^{ikx_j}e^{iNx_j}
+=
+e^{ikx_j}e^{i2\pi j}
+=
+e^{ikx_j}.
+\]
+Logo, os modos \(e^{i(k+N)x}\) e \(e^{ikx}\) são indistinguíveis nos pontos da malha. De modo mais geral, modos cujos índices diferem por múltiplos de \(N\) produzem os mesmos valores nodais.
+
+Esse efeito torna-se particularmente importante em problemas não lineares. Se duas funções possuem espectros limitados aos modos \(|p|\leq K\) e \(|q|\leq K\), então o produto entre elas pode gerar modos com índice \(p+q\), alcançando frequências de até \(2K\). Quando essas frequências não estão representadas na malha, elas podem ser reinterpretadas artificialmente como frequências mais baixas. Assim, parte da energia que deveria estar associada a modos não resolvidos retorna aos modos resolvidos, poluindo o espectro computado.
+
+Em equações não lineares, esse acúmulo artificial de energia pode comprometer a estabilidade da simulação. Em certos casos, contribui para o chamado \emph{spectral blocking}, isto é, o acúmulo numérico de energia próximo ao corte espectral. Uma técnica clássica para reduzir esse problema, especialmente em não linearidades quadráticas, é a regra de \emph{dealiasing} \(2/3\), associada a Orszag. Se a maior frequência representável pela grade é da ordem de \(N/2\), a regra mantém apenas modos aproximadamente até
+\[
+|k|\leq \frac{N}{3}.
+\]
+De forma equivalente, pode-se usar uma grade física aumentada por um fator \(3/2\), calcular o produto nessa grade refinada e, em seguida, retornar ao espaço espectral descartando os modos acima do corte desejado.
+
+Outro fenômeno relevante é o fenômeno de Gibbs. Quando uma função periódica possui descontinuidades, sua série de Fourier apresenta oscilações próximas aos pontos de salto. O aumento do número de modos concentra essas oscilações em uma vizinhança menor da descontinuidade, mas não elimina completamente sua amplitude máxima. Dessa forma, a presença de saltos, baixa regularidade ou camadas abruptas pode deteriorar a convergência espectral e produzir oscilações locais na aproximação.
+
+Portanto, a eficiência da formulação Fourier--Chebyshev adotada neste trabalho está ligada à regularidade das soluções consideradas. Para problemas suaves e periódicos, espera-se decaimento rápido dos coeficientes e alta precisão com poucos graus de liberdade. Em contrapartida, funções pouco regulares, descontinuidades ou frequências não resolvidas podem reduzir a taxa de convergência e introduzir efeitos como aliasing e oscilações do tipo Gibbs. Nos experimentos numéricos deste trabalho, que são lineares e baseados em soluções suaves, o aliasing não é o mecanismo dominante; sua discussão é incluída por ser essencial em extensões futuras para problemas não lineares periódicos.
+
+\section{Galerkin e colocação espectral}
+
+A formulação espectral pode ser introduzida a partir de um problema abstrato da forma
+\[
+\mathcal{L}u=f,
+\]
+em que \(\mathcal{L}\) é um operador diferencial linear, \(f\) é a função dada e \(u\) é a incógnita. A ideia básica consiste em substituir o espaço funcional em que a solução é procurada por um subespaço finito-dimensional
+\[
+X_N=\operatorname{span}\{\phi_1,\phi_2,\dots,\phi_N\},
+\]
+gerado por funções de base adequadas ao problema. Assim, procura-se uma aproximação da forma
+\[
+u_N=\sum_{j=1}^{N}c_j\phi_j,
+\]
+em que os coeficientes \(c_j\) devem ser determinados. Substituindo \(u_N\) na equação, define-se o resíduo
+\[
+R_N=\mathcal{L}u_N-f.
+\]
+Como, em geral, \(u_N\) não satisfaz exatamente a equação em todo o domínio, a construção do método depende da forma escolhida para impor que esse resíduo seja pequeno ou nulo em algum sentido.
+
+No método de Galerkin, a condição imposta é a ortogonalidade do resíduo em relação ao próprio espaço de aproximação. Mais precisamente, exige-se que
+\[
+\langle R_N,\phi_i\rangle=0,
+\qquad i=1,\dots,N,
+\]
+onde \(\langle\cdot,\cdot\rangle\) denota o produto interno do espaço funcional considerado, usualmente um produto interno de \(L^2\). Como
+\[
+R_N=\mathcal{L}\left(\sum_{j=1}^{N}c_j\phi_j\right)-f,
+\]
+e \(\mathcal{L}\) é linear, obtém-se
+\[
+\sum_{j=1}^{N}c_j\langle \mathcal{L}\phi_j,\phi_i\rangle
+=
+\langle f,\phi_i\rangle,
+\qquad i=1,\dots,N.
+\]
+Portanto, a formulação de Galerkin conduz ao sistema linear
+\[
+\sum_{j=1}^{N}M_{ij}c_j=f_i,
+\]
+em que
+\[
+M_{ij}=\langle \mathcal{L}\phi_j,\phi_i\rangle,
+\qquad
+f_i=\langle f,\phi_i\rangle.
+\]
+Em muitos problemas diferenciais, integrações por partes permitem transferir derivadas da função incógnita para as funções de teste, produzindo uma formulação variacional mais adequada. Por exemplo, se \(\mathcal{L}u=u''\) em um intervalo \((a,b)\), então
+\[
+\langle u'',v\rangle
+=
+\int_a^b u''(x)v(x)\,dx
+=
+\left[u'(x)v(x)\right]_a^b-
+\int_a^b u'(x)v'(x)\,dx.
+\]
+Sob condições de contorno que anulam o termo de fronteira, obtém-se
+\[
+\langle u'',v\rangle=-\langle u',v'\rangle.
+\]
+Esse cálculo evidencia como a estrutura do operador diferencial e as condições de contorno entram diretamente na matriz do método.
+
+No método de colocação espectral, a filosofia é distinta. Em vez de impor que o resíduo seja ortogonal às funções da base, exige-se que ele se anule em um conjunto finito de pontos do domínio, chamados pontos de colocação. Assim, escolhidos pontos \(\{x_j\}_{j=0}^{N}\), impõe-se
+\[
+R_N(x_j)=0,
+\qquad j=0,1,\dots,N,
+\]
+ou, equivalentemente,
+\[
+\mathcal{L}u_N(x_j)=f(x_j),
+\qquad j=0,1,\dots,N.
+\]
+Quando se escreve
+\[
+u_N(x)=\sum_{i=0}^{N}c_i\phi_i(x),
+\]
+a condição de colocação produz o sistema
+\[
+\sum_{i=0}^{N}c_i\,\mathcal{L}\phi_i(x_j)=f(x_j),
+\qquad j=0,1,\dots,N.
+\]
+Logo, os coeficientes são determinados impondo que a equação diferencial seja satisfeita exatamente nos nós escolhidos.
+
+Essa formulação é especialmente conveniente em métodos nodais. Se \(\ell_j\) denota o polinômio fundamental de Lagrange associado aos pontos \(x_0,\dots,x_N\), então
+\[
+\ell_j(x_i)=\delta_{ij}
+\]
+e o interpolante de uma função \(u\) pode ser escrito como
+\[
+I_Nu(x)=\sum_{j=0}^{N}u(x_j)\ell_j(x).
+\]
+Dessa forma, as incógnitas do problema passam a ser os valores nodais da solução, e a ação de operadores diferenciais é representada por matrizes de diferenciação. No presente trabalho, essa abordagem será adotada na variável espacial, usando pontos de Chebyshev--Gauss--Lobatto, enquanto a variável temporal será tratada por uma expansão de Fourier.
+
+
+\subsection{Colocação, quadratura e interpretação de Galerkin}
+\label{subsec:colocacao-quadratura}
+
+Embora Galerkin e colocação sejam apresentados de formas diferentes, eles estão relacionados pela quadratura associada à base espectral. No método de Galerkin, aparecem integrais do tipo
+\[
+\langle R_N,\phi_i\rangle=
+\int R_N(x)\phi_i(x)w(x)\,dx.
+\]
+Se essas integrais são aproximadas por uma fórmula de quadratura cujos nós coincidem com os pontos de colocação, obtém-se uma formulação discreta em que o resíduo é avaliado exatamente nesses nós. Em situações favoráveis, quando a quadratura é exata para o grau polinomial envolvido, a formulação por colocação pode ser vista como uma versão computacionalmente prática da formulação de Galerkin.
+
+Essa observação é importante para a fundamentação do método usado nesta IC. A colocação é simples de implementar, pois trabalha diretamente com valores nodais da solução e com matrizes de diferenciação. Ao mesmo tempo, sua ligação com Galerkin via quadratura mostra que ela não é apenas uma imposição pontual arbitrária: a escolha dos nós está associada à estrutura de ortogonalidade e quadratura da base espectral. No caso de Fourier, a grade uniforme se relaciona à regra do trapézio periódica; no caso de Chebyshev, os pontos de Gauss--Lobatto se relacionam à quadratura de Chebyshev e permitem ainda impor condições de contorno nas extremidades.
+
+\section{Fourier na variável temporal}
+
+\subsection{Motivação da formulação temporal}
+
+Com base na interpretação espectral desenvolvida no capítulo anterior, passamos ao estudo de soluções periódicas de equações diferenciais parciais. Quando a solução apresenta periodicidade temporal, a decomposição em modos harmônicos fornece uma forma natural de tratar globalmente a dependência em \(t\), sem recorrer a esquemas de avanço temporal passo a passo.
+
+Assim, se \(u=u(x,t)\) é periódica em \(t\), de período \(T>0\), introduz-se
+\[
+\omega=\frac{2\pi}{T}
+\]
+e considera-se sua expansão formal na forma complexa
+\[
+u(x,t)\sim \sum_{n\in\mathbb{Z}}\widehat{u}_n(x)e^{in\omega t}.
+\]
+Cada coeficiente \(\widehat{u}_n(x)\) representa a contribuição espacial do modo temporal de frequência \(n\omega\).
+
+
+\subsection{Soluções periódicas de EDOs e condição de não criticidade}
+
+Antes de passar à formulação espectral propriamente dita, convém registrar alguns fatos qualitativos sobre soluções periódicas de equações diferenciais ordinárias. Esses resultados justificam a ideia de procurar diretamente uma resposta periódica, em vez de estudar apenas soluções geradas por condições iniciais arbitrárias.
+
+Consideremos inicialmente um sistema autônomo
+\[
+x'=f(x),
+\]
+em que \(f:\mathbb{R}^N\to\mathbb{R}^N\) é localmente Lipschitz. A hipótese de regularidade é importante porque garante unicidade local de soluções. Nesse contexto, vale o seguinte resultado.
+
+\begin{teorema}[Retorno ao ponto inicial e periodicidade]
+Seja \(f:\mathbb{R}^N\to\mathbb{R}^N\) localmente Lipschitz e seja \(x:J\to\mathbb{R}^N\), com \(J=(\alpha,\beta)\), uma solução maximal de
+\[
+x'=f(x).
+\]
+Suponha que existam \(t_0\in J\) e \(T>0\) tais que \(t_0+T\in J\) e
+\[
+x(t_0+T)=x(t_0).
+\]
+Então \(J=\mathbb{R}\) e \(x\) é uma solução periódica de período \(T\).
+\end{teorema}
+
+\begin{proof}
+Defina
+\[
+y(t)=x(t-T),
+\]
+no intervalo em que essa expressão faz sentido. Como a equação é autônoma, \(y\) também satisfaz \(y'=f(y)\). Além disso,
+\[
+y(t_0+T)=x(t_0)=x(t_0+T).
+\]
+Logo, \(x\) e \(y\) são soluções da mesma equação que coincidem em um ponto. Pela unicidade, elas coincidem no intervalo comum de definição. Assim,
+\[
+x(t)=y(t)=x(t-T),
+\]
+ou, equivalentemente,
+\[
+x(t+T)=x(t).
+\]
+Como a solução é maximal, a repetição periódica impede que o intervalo maximal tenha extremidades finitas; portanto, \(J=\mathbb{R}\). Consequentemente, a solução é \(T\)-periódica.
+\end{proof}
+
+Esse resultado formaliza uma ideia fundamental: em um sistema autônomo com unicidade, se uma trajetória retorna exatamente ao mesmo ponto, então ela não pode seguir outro caminho; ela deve repetir a mesma evolução. Portanto, a trajetória fechada corresponde a uma solução periódica.
+
+Também é útil distinguir um período qualquer de um período fundamental. Para soluções não constantes, o menor período positivo existe.
+
+\begin{teorema}[Existência de período fundamental]
+Seja \(f:\mathbb{R}^N\to\mathbb{R}^N\) localmente Lipschitz. Toda solução periódica não constante de
+\[
+x'=f(x)
+\]
+possui um menor período positivo \(T_0\). Além disso, sua trajetória pode ser representada por
+\[
+\{x(t):0\leq t\leq T_0\},
+\]
+com \(x(0)=x(T_0)\), sem repetição de pontos no intervalo \(0\leq t<T_0\).
+\end{teorema}
+
+\begin{proof}
+Suponha, por contradição, que não exista menor período positivo. Então há uma sequência de períodos \(T_m>0\) tal que \(T_m\to0\). Como cada \(T_m\) é período,
+\[
+x(t+T_m)=x(t),
+\]
+para todo \(t\). Logo,
+\[
+x'(t)=\lim_{m\to\infty}\frac{x(t+T_m)-x(t)}{T_m}=0.
+\]
+Portanto, \(x\) seria constante, contrariando a hipótese. Assim, existe um menor período positivo. Se houvesse \(0\leq t_1<t_2<T_0\) com \(x(t_1)=x(t_2)\), o teorema anterior implicaria que \(t_2-t_1\) é período, contradizendo a minimalidade de \(T_0\).
+\end{proof}
+
+Passamos agora ao caso que se conecta diretamente à formulação numérica deste trabalho. Consideremos o sistema linear não homogêneo
+\[
+x'(t)=A(t)x(t)+b(t),
+\]
+em que \(A(t)\) e \(b(t)\) são contínuas e periódicas de período \(\omega>0\). O sistema homogêneo associado é
+\[
+x'(t)=A(t)x(t).
+\]
+Dizemos que esse sistema homogêneo é \emph{não-crítico} em relação ao período \(\omega\) quando não admite solução \(\omega\)-periódica não trivial.
+
+\begin{teorema}[Existência e unicidade de solução periódica no caso linear]
+Considere
+\[
+x'(t)=A(t)x(t)+b(t),
+\]
+onde \(A:\mathbb{R}\to M_{n,n}(\mathbb{R})\) e \(b:\mathbb{R}\to\mathbb{R}^n\) são contínuas e \(\omega\)-periódicas. Suponha que o sistema homogêneo
+\[
+x'(t)=A(t)x(t)
+\]
+seja não-crítico em relação a \(\omega\). Então o sistema não homogêneo possui uma única solução \(\omega\)-periódica.
+\end{teorema}
+
+\begin{proof}
+Primeiro, provamos a unicidade. Se \(u\) e \(v\) são duas soluções \(\omega\)-periódicas do sistema não homogêneo, então
+\[
+\varphi=u-v
+\]
+satisfaz o sistema homogêneo
+\[
+\varphi'=A(t)\varphi.
+\]
+Além disso, \(\varphi\) também é \(\omega\)-periódica. Pela hipótese de não criticidade, segue que \(\varphi\equiv0\). Logo, \(u=v\).
+
+Para a existência, seja \(Z(t)\) uma matriz fundamental do sistema homogêneo, normalizada por \(Z(0)=I\). Pela fórmula da variação das constantes, a solução do problema não homogêneo com condição inicial \(x(0)=x_0\) é
+\[
+x(t)=Z(t)\left[x_0+\int_0^t Z^{-1}(s)b(s)\,ds\right].
+\]
+Impor que a solução seja \(\omega\)-periódica equivale a exigir
+\[
+x(\omega)=x(0)=x_0.
+\]
+Substituindo \(t=\omega\) na expressão anterior, obtemos
+\[
+x_0=Z(\omega)\left[x_0+\int_0^\omega Z^{-1}(s)b(s)\,ds\right].
+\]
+Multiplicando por \(Z^{-1}(\omega)\), resulta a equação algébrica
+\[
+\bigl(Z^{-1}(\omega)-I\bigr)x_0
+=
+\int_0^\omega Z^{-1}(s)b(s)\,ds.
+\]
+Mostremos que \(Z^{-1}(\omega)-I\) é inversível. Se não fosse, existiria \(y\neq0\) tal que
+\[
+\bigl(Z^{-1}(\omega)-I\bigr)y=0.
+\]
+Então \(Z(\omega)y=y\). A função \(x(t)=Z(t)y\) é solução não trivial do sistema homogêneo e satisfaz
+\[
+x(\omega)=Z(\omega)y=y=x(0).
+\]
+Pelo resultado de retorno ao ponto inicial, essa solução é \(\omega\)-periódica, contradizendo a hipótese de não criticidade. Portanto, \(Z^{-1}(\omega)-I\) é inversível e a equação algébrica acima determina de modo único o valor inicial \(x_0\). A solução correspondente é, então, a única solução \(\omega\)-periódica.
+\end{proof}
+
+Esse teorema é especialmente importante para a formulação espectral adotada nesta IC. Ele mostra que, sob uma condição de não criticidade, a busca por uma solução periódica pode ser reduzida a uma condição algébrica. No caso particular em que \(A\) é constante, essa redução assume uma forma ainda mais explícita quando usamos Fourier no tempo. Escrevendo
+\[
+x(t)\sim\sum_{k\in\mathbb{Z}}\widehat{x}_k e^{ik\omega t},
+\qquad
+b(t)\sim\sum_{k\in\mathbb{Z}}\widehat{b}_k e^{ik\omega t},
+\]
+e substituindo em
+\[
+x'(t)=Ax(t)+b(t),
+\]
+obtemos, para cada modo \(k\),
+\[
+(ik\omega I-A)\widehat{x}_k=\widehat{b}_k.
+\]
+Assim, o papel da matriz \(Z^{-1}(\omega)-I\) no tratamento teórico é substituído, na formulação modal com \(A\) constante, pela família de matrizes \(ik\omega I-A\). A resolução modo a modo dessas equações é precisamente o núcleo da implementação temporal utilizada posteriormente.
+
+\subsection{Passagem ao caso de EDPs}
+
+Consideremos agora uma equação evolutiva linear da forma
+\[
+u_t(x,t)=\mathcal{L}_x u(x,t)+f(x,t),
+\qquad (x,t)\in [-1,1]\times\mathbb{R},
+\]
+em que \(\mathcal{L}_x\) denota um operador diferencial linear atuando apenas na variável espacial, e \(f\) é \(T\)-periódica em \(t\). Procurando uma solução também \(T\)-periódica, escreve-se
+\[
+u(x,t)\sim \sum_{n\in\mathbb{Z}}\widehat{u}_n(x)e^{in\omega t},
+\qquad
+f(x,t)\sim \sum_{n\in\mathbb{Z}}\widehat{f}_n(x)e^{in\omega t},
+\qquad
+\omega=\frac{2\pi}{T}.
+\]
+Derivando formalmente em relação a \(t\) e identificando os coeficientes de cada modo \(e^{in\omega t}\), obtém-se, para todo \(n\in\mathbb{Z}\),
+\[
+in\omega\,\widehat{u}_n(x)=\mathcal{L}_x\widehat{u}_n(x)+\widehat{f}_n(x).
+\]
+O problema periódico original é, portanto, transformado em uma família de problemas espaciais, um para cada modo de Fourier. Essa é a etapa central da discretização temporal espectral adotada neste trabalho.
+
+\subsection{Aproximação dos coeficientes temporais por FFT}
+
+Na implementação computacional, a série de Fourier é truncada a um número finito de modos,
+\[
+k=-K,-K+1,\dots,K,
+\]
+e os coeficientes temporais são aproximados a partir de amostras igualmente espaçadas no intervalo \([0,T]\). Se \(N_t=2K+1\) e
+\[
+t_j=\frac{jT}{N_t},
+\qquad j=0,1,\dots,N_t-1,
+\]
+então os coeficientes de Fourier da forçante podem ser calculados eficientemente por FFT. Essa escolha é particularmente natural no contexto periódico, pois a malha uniforme é compatível com a estrutura trigonométrica da base temporal.
+
+Uma vez obtidos os coeficientes \(\widehat{b}_k\), resolve-se, para cada modo, o sistema algébrico correspondente. A solução aproximada é então reconstruída por transformada inversa, ou, de modo equivalente, pela soma truncada
+\[
+u_{K}(t)=\sum_{k=-K}^{K}\widehat{u}_k e^{ik\omega t}.
+\]
+Essa estratégia evita qualquer avanço temporal explícito e incorpora a periodicidade diretamente no processo de discretização.
+
+
+\subsection{Algoritmo temporal para sistemas lineares finito-dimensionais}
+\label{subsec:algoritmo-temporal-sistemas}
+
+A discussão anterior mostra que a periodicidade temporal pode ser incorporada diretamente por meio de uma expansão de Fourier. Nesta subseção, descrevemos de modo mais operacional o algoritmo utilizado nas simulações numéricas para sistemas lineares da forma
+\[
+U'(t)=AU(t)+b(t),
+\]
+em que \(A\in\mathbb{R}^{n\times n}\) é uma matriz constante, \(b:\mathbb{R}\to\mathbb{R}^n\) é uma função \(T\)-periódica e \(U:\mathbb{R}\to\mathbb{R}^n\) é a solução vetorial procurada. Essa formulação é o modelo finito-dimensional que será usado inicialmente para validar a etapa temporal do método antes de sua aplicação a problemas com dependência espacial.
+
+A ideia central é procurar diretamente a resposta periódica do sistema, em vez de avançar a solução passo a passo no tempo. Para isso, introduzimos
+\[
+\omega=\frac{2\pi}{T}
+\]
+e aproximamos a forçante periódica por uma série de Fourier truncada:
+\[
+b_K(t)=\sum_{k=-K}^{K}\widehat{b}_k e^{ik\omega t},
+\]
+onde \(\widehat{b}_k\in\mathbb{C}^n\) é o coeficiente de Fourier vetorial associado ao modo \(k\). De modo análogo, procura-se uma solução aproximada da forma
+\[
+U_K(t)=\sum_{k=-K}^{K}\widehat{U}_k e^{ik\omega t},
+\]
+com \(\widehat{U}_k\in\mathbb{C}^n\). Assim, cada modo temporal \(e^{ik\omega t}\) possui um coeficiente vetorial: no caso de um sistema bidimensional, por exemplo, \(\widehat{U}_k\) possui duas componentes, uma para cada componente da solução.
+
+Substituindo a aproximação de \(U_K\) no sistema diferencial, obtemos
+\[
+\sum_{k=-K}^{K}ik\omega\widehat{U}_k e^{ik\omega t}
+=
+A\sum_{k=-K}^{K}\widehat{U}_k e^{ik\omega t}
++
+\sum_{k=-K}^{K}\widehat{b}_k e^{ik\omega t}.
+\]
+Como os modos exponenciais são linearmente independentes, a igualdade acima implica, para cada \(k=-K,\ldots,K\), o sistema algébrico
+\[
+(ik\omega I-A)\widehat{U}_k=\widehat{b}_k.
+\]
+Portanto, a equação diferencial periódica é transformada em uma família finita de sistemas lineares independentes, um para cada modo de Fourier.
+
+Do ponto de vista computacional, os coeficientes \(\widehat{b}_k\) da forçante são obtidos a partir de amostras igualmente espaçadas de \(b(t)\) ao longo de um período. Dado \(K\), define-se
+\[
+N_t=2K+1,
+\]
+de modo que os modos considerados são
+\[
+k=-K,-K+1,\ldots,0,\ldots,K-1,K.
+\]
+A malha periódica de amostragem é dada por
+\[
+\tau_j=\frac{jT}{N_t},\qquad j=0,1,\ldots,N_t-1.
+\]
+O ponto \(T\) não é repetido, pois, pela periodicidade, ele representa o mesmo instante que \(0\). Os valores \(b(\tau_j)\) são organizados em uma matriz de amostras
+\[
+B=\bigl[b(\tau_0)\ \ b(\tau_1)\ \ \cdots\ \ b(\tau_{N_t-1})\bigr]\in\mathbb{R}^{n\times N_t}.
+\]
+Aplicando a transformada rápida de Fourier às linhas dessa matriz, obtêm-se aproximações discretas dos coeficientes \(\widehat{b}_k\). Em seguida, para cada modo \(k\), resolve-se o sistema \((ik\omega I-A)\widehat{U}_k=\widehat{b}_k\). Finalmente, a solução aproximada é reconstruída pela soma modal truncada.
+
+Quando existe uma solução exata conhecida, a qualidade da aproximação pode ser medida pelo erro
+\[
+e(t)=U_{\mathrm{ex}}(t)-U_K(t).
+\]
+Quando a solução exata não está disponível, utiliza-se o resíduo
+\[
+R_K(t)=U_K'(t)-AU_K(t)-b(t),
+\]
+que mede o quanto a aproximação satisfaz a equação diferencial original. Esse resíduo será especialmente útil em testes posteriores, nos quais a solução periódica exata não é conhecida previamente.
+
+\clearpage
+\begin{algoritmo}{Aproximação periódica por Fourier no tempo}
+\label{alg:fourier-tempo}
+\textbf{Entrada:} matriz \(A\in\mathbb{R}^{n\times n}\), período \(T>0\), número de modos \(K\), função periódica \(b(t)\) e tempos \(t^{(\ell)}\) nos quais a solução será avaliada.
+
+\textbf{Saída:} valores aproximados de \(U_K(t)\); quando disponível, erro em relação à solução exata; e resíduo da aproximação.
+
+\begin{enumerate}[label=\textbf{Passo \arabic*.}, leftmargin=2.1cm]
+    \item Calcular a frequência fundamental
+    \[
+    \omega=\frac{2\pi}{T}.
+    \]
+
+    \item Definir o número total de modos e pontos de amostragem:
+    \[
+    N_t=2K+1.
+    \]
+
+    \item Construir a malha periódica uniforme
+    \[
+    \tau_j=\frac{jT}{N_t},\qquad j=0,1,\ldots,N_t-1.
+    \]
+
+    \item Avaliar a forçante nos pontos da malha e montar a matriz
+    \[
+    B=\bigl[b(\tau_0)\ \ b(\tau_1)\ \ \cdots\ \ b(\tau_{N_t-1})\bigr].
+    \]
+
+    \item Aplicar a FFT às linhas de \(B\) para obter os coeficientes de Fourier discretos da forçante.
+
+    \item Reordenar os coeficientes para que fiquem associados aos modos
+    \[
+    k=-K,-K+1,\ldots,0,\ldots,K-1,K.
+    \]
+
+    \item Para cada modo \(k\), resolver o sistema linear
+    \[
+    (ik\omega I-A)\widehat{U}_k=\widehat{b}_k.
+    \]
+
+    \item Para cada tempo de avaliação \(t^{(\ell)}\), reconstruir
+    \[
+    U_K(t^{(\ell)})=\sum_{k=-K}^{K}\widehat{U}_k e^{ik\omega t^{(\ell)}}.
+    \]
+
+    \item Se houver solução exata \(U_{\mathrm{ex}}\), calcular o erro
+    \[
+    e(t^{(\ell)})=U_{\mathrm{ex}}(t^{(\ell)})-U_K(t^{(\ell)}).
+    \]
+
+    \item Calcular, quando desejado, o resíduo
+    \[
+    R_K(t^{(\ell)})=U_K'(t^{(\ell)})-AU_K(t^{(\ell)})-b(t^{(\ell)}).
+    \]
+\end{enumerate}
+\end{algoritmo}
+
+A Figura~\ref{fig:fluxograma-fourier-tempo} apresenta um fluxograma resumindo as etapas descritas. O fluxograma tem caráter complementar: ele não substitui a formulação matemática, mas explicita a sequência computacional utilizada na implementação.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    node distance=0.78cm,
+    >=Latex,
+    bloco/.style={
+        rectangle,
+        rounded corners,
+        draw,
+        align=center,
+        text width=11.2cm,
+        minimum height=0.78cm,
+        font=\small
+    },
+    seta/.style={->, thick}
+]
+
+\node[bloco] (entrada) {Definir os dados do problema: matriz \(A\), período \(T\), número de modos \(K\) e forçante periódica \(b(t)\)};
+\node[bloco, below=of entrada] (malha) {Construir a malha periódica uniforme \(\tau_j=jT/N_t\), com \(N_t=2K+1\)};
+\node[bloco, below=of malha] (amostras) {Avaliar \(b(\tau_j)\) e montar a matriz de amostras \(B\)};
+\node[bloco, below=of amostras] (fft) {Aplicar FFT para obter os coeficientes de Fourier \(\widehat{b}_k\)};
+\node[bloco, below=of fft] (sistemas) {Para cada modo \(k=-K,\ldots,K\), resolver \((ik\omega I-A)\widehat{U}_k=\widehat{b}_k\)};
+\node[bloco, below=of sistemas] (reconstrucao) {Reconstruir a solução \(U_K(t)=\sum_{k=-K}^{K}\widehat{U}_k e^{ik\omega t}\)};
+\node[bloco, below=of reconstrucao] (diagnostico) {Calcular erro, quando houver solução exata, e/ou resíduo \(R_K(t)=U_K'(t)-AU_K(t)-b(t)\)};
+
+\draw[seta] (entrada) -- (malha);
+\draw[seta] (malha) -- (amostras);
+\draw[seta] (amostras) -- (fft);
+\draw[seta] (fft) -- (sistemas);
+\draw[seta] (sistemas) -- (reconstrucao);
+\draw[seta] (reconstrucao) -- (diagnostico);
+
+\end{tikzpicture}
+\caption{Fluxograma do algoritmo de aproximação periódica por Fourier no tempo.}
+\label{fig:fluxograma-fourier-tempo}
+\end{figure}
+
+
+
+\subsection{Generalização da rotina temporal}
+\label{subsec:rotina-generica-fourier}
+
+Nos testes iniciais, a matriz \(A\) foi escolhida de modo a representar um problema particular, usado para validação. No entanto, a formulação temporal descrita acima não depende dessa matriz específica. O mesmo procedimento pode ser aplicado a um sistema linear geral
+\[
+U'(t)=AU(t)+b(t),
+\]
+desde que \(A\in\mathbb{R}^{n\times n}\) seja constante e que a forçante \(b(t)\) seja fornecida pelo usuário como uma função vetorial periódica. Essa observação motivou a construção de uma rotina mais genérica, na qual o usuário informa a matriz \(A\), o período \(T\), o número de modos \(K\), a função \(b(t)\) e os instantes nos quais deseja avaliar a solução aproximada.
+
+Essa generalização é importante porque separa o \emph{algoritmo} do \emph{exemplo de validação}. No teste \(2\times2\), a matriz
+\[
+A=\begin{pmatrix}0&1\\-1&-1\end{pmatrix}
+\]
+aparece por corresponder à forma de primeira ordem da equação
+\[
+x''+x'+x=f(t).
+\]
+Na rotina genérica, por outro lado, essa matriz pode ser substituída por outra matriz constante, desde que o problema continue bem posto e compatível com a hipótese de periodicidade temporal.
+
+Do ponto de vista matemático, a função fornecida pelo usuário deve obedecer a algumas condições. Primeiro, deve ser compatível dimensionalmente com a matriz \(A\): se \(A\) é \(n\times n\), então \(b(t)\) deve assumir valores em \(\mathbb{R}^n\). Segundo, a função deve ser \(T\)-periódica, ou ao menos representar adequadamente uma forçante periódica no intervalo de amostragem. Terceiro, para que a aproximação por Fourier seja eficiente, é desejável que \(b(t)\) possua regularidade suficiente; funções suaves tendem a produzir coeficientes de Fourier com decaimento rápido, favorecendo a convergência espectral.
+
+Além disso, há uma condição algébrica essencial associada aos sistemas modais. Para cada modo considerado, a matriz
+\[
+ik\omega I-A
+\]
+deve ser inversível, ou pelo menos numericamente bem condicionada. Caso contrário, o sistema
+\[
+(ik\omega I-A)\widehat{U}_k=\widehat{b}_k
+\]
+pode ser singular ou extremamente sensível a erros de arredondamento. Essa condição é a versão modal da ideia de não criticidade discutida anteriormente para sistemas lineares periódicos: a existência de uma solução periódica bem determinada depende da ausência de ressonâncias que impeçam a inversão dos operadores associados aos modos temporais.
+
+Assim, a rotina genérica não transforma o método em um procedimento totalmente irrestrito. Ela amplia o uso do algoritmo para diferentes matrizes constantes e diferentes forçantes periódicas, mas preserva as hipóteses fundamentais da formulação: periodicidade da entrada, compatibilidade dimensional, regularidade suficiente para a expansão espectral e boa colocação dos sistemas lineares modo a modo.
+
+As simulações numéricas deste trabalho são realizadas no \emph{GNU Octave}, escolhido por ser uma ferramenta livre, acessível e adequada para manipulação matricial, resolução de sistemas lineares, cálculo da FFT e geração de gráficos. A implementação segue as etapas do Algoritmo~\ref{alg:fourier-tempo}; entretanto, a descrição apresentada privilegia a estrutura matemática do método, e não detalhes específicos da linguagem de programação.
+
+\section{Chebyshev na variável espacial}
+
+Uma vez obtidas as equações espaciais modo a modo, resta aproximar cada função \(\widehat{u}_n(x)\) no intervalo \([-1,1]\). Para isso, emprega-se uma discretização espectral baseada em polinômios de Chebyshev.
+
+\subsection{Interpolação nos pontos de Chebyshev--Gauss--Lobatto}
+
+Seja \(N\in\mathbb{N}\). Os pontos de Chebyshev--Gauss--Lobatto são definidos por
+\[
+x_j=\cos\left(\frac{j\pi}{N}\right), \qquad j=0,1,\dots,N.
+\]
+Esses pontos correspondem aos extremos do polinômio \(T_N\) e desempenham papel central em interpolação e colocação espectral.
+
+Dada uma função \(u\) definida em \([-1,1]\), denota-se por \(I_Nu\) o polinômio interpolador de grau menor ou igual a \(N\) que coincide com \(u\) nos nós \(x_j\). Escrevendo \(\ell_j\) para os polinômios fundamentais de Lagrange associados a esses nós, tem-se
+\[
+I_Nu(x)=\sum_{j=0}^{N}u(x_j)\ell_j(x).
+\]
+Como \(I_Nu\in \mathbb{P}_N\), também se pode representá-lo na base de Chebyshev:
+\[
+I_Nu(x)=\sum_{k=0}^{N}\widetilde{u}_k\,T_k(x).
+\]
+
+Os coeficientes \(\widetilde{u}_k\) podem ser obtidos por uma transformada discreta de Chebyshev. Introduzindo
+\[
+c_j=
+\begin{cases}
+2, & j=0 \text{ ou } j=N,\\
+1, & 1\leq j\leq N-1,
+\end{cases}
+\]
+vale a fórmula
+\[
+\widetilde{u}_k=\frac{2}{c_k N}\sum_{j=0}^{N}\frac{1}{c_j}\,u(x_j)\cos\left(\frac{kj\pi}{N}\right),
+\qquad k=0,1,\dots,N.
+\]
+Essa relação mostra que os coeficientes do interpolante podem ser calculados eficientemente por rotinas do tipo DCT/FFT, o que torna a formulação computacionalmente atraente.
+
+\subsection{Produto interno discreto e ortogonalidade discreta}
+
+Associado aos pontos de Chebyshev--Gauss--Lobatto, define-se o produto interno discreto
+\[
+\langle u,v\rangle_{N,w}
+=
+\sum_{j=0}^{N}u(x_j)v(x_j)\,\omega_j,
+\]
+em que
+\[
+\omega_j=\frac{\pi}{c_jN},
+\qquad
+c_j=
+\begin{cases}
+2, & j=0 \text{ ou } j=N,\\
+1, & 1\leq j\leq N-1.
+\end{cases}
+\]
+A norma discreta correspondente é dada por
+\[
+\|u\|_{N,w}=\langle u,u\rangle_{N,w}^{1/2}.
+\]
+
+Essa estrutura discreta está ligada à quadratura de Chebyshev--Gauss--Lobatto. Em particular, para polinômios de grau suficientemente baixo, o produto interno discreto coincide com o produto interno contínuo associado ao peso \(w(x)=1/\sqrt{1-x^2}\). Como consequência, obtém-se uma forma de ortogonalidade discreta para os polinômios de Chebyshev: se \(m\neq n\) e \(m+n<2N\), então
+\[
+\langle T_m,T_n\rangle_{N,w}=0.
+\]
+Além disso, para \(0\leq n\leq N\),
+\[
+\|T_n\|_{N,w}^2=
+\begin{cases}
+\pi, & n=0 \text{ ou } n=N,\\
+\dfrac{\pi}{2}, & 1\leq n\leq N-1.
+\end{cases}
+\]
+
+Outra propriedade útil, que será empregada na análise da discretização, é a equivalência entre a norma contínua ponderada e a norma discreta em \(\mathbb{P}_N\). Mais precisamente, para todo \(u\in\mathbb{P}_N\),
+\[
+\|u\|_{N,w}\leq \|u\|_{w}\leq \sqrt{2}\,\|u\|_{N,w}.
+\]
+Essa estimativa mostra que, no espaço dos polinômios de grau até \(N\), a estrutura discreta preserva de maneira estável a geometria induzida pelo produto interno contínuo.
+
+\subsection{Diferenciação espectral}
+
+Para usar a colocação espectral em equações diferenciais, é necessário dispor de uma aproximação para as derivadas da função interpolada. Seja
+\[
+u_N(x)=I_Nu(x)=\sum_{j=0}^{N}u(x_j)\ell_j(x).
+\]
+Ao derivar essa expressão e avaliá-la nos nós \(x_i\), obtém-se
+\[
+u_N'(x_i)=\sum_{j=0}^{N}D_{ij}\,u(x_j),
+\qquad i=0,1,\dots,N,
+\]
+em que \(D=(D_{ij})\) é a matriz de diferenciação de Chebyshev.
+
+Para os pontos \(x_j=\cos(j\pi/N)\), essa matriz é dada por
+\[
+D_{ij}=
+\begin{cases}
+\dfrac{c_i}{c_j}\dfrac{(-1)^{i+j}}{x_i-x_j}, & i\neq j,\\[1.2ex]
+-\dfrac{x_i}{2(1-x_i^2)}, & 1\leq i\leq N-1,\ i=j,\\[1.2ex]
+\dfrac{2N^2+1}{6}, & i=j=0,\\[1.2ex]
+-\dfrac{2N^2+1}{6}, & i=j=N,
+\end{cases}
+\]
+com a mesma convenção para os coeficientes \(c_j\). A matriz da segunda derivada é então obtida por
+\[
+D^{(2)}=D^2.
+\]
+
+É importante interpretar corretamente essa matriz. Ela não é a derivada em si, mas uma representação discreta do operador derivada no espaço finito-dimensional dos interpolantes de Chebyshev. Se o vetor
+\[
+\mathbf{u}=\big(u(x_0),u(x_1),\dots,u(x_N)\big)^T
+\]
+contém os valores nodais de uma função, então \(D\mathbf{u}\) aproxima os valores da derivada do interpolante nos mesmos nós. De modo análogo, \(D^{(2)}\mathbf{u}\) aproxima os valores da segunda derivada. Assim, derivar uma função aproximada é substituído, no método numérico, por multiplicar um vetor por uma matriz.
+
+Essa formulação permite transformar operadores diferenciais espaciais em operadores matriciais atuando sobre os valores nodais da solução. É justamente essa passagem que torna possível reduzir o problema contínuo a sistemas algébricos finitos.
+
+\section{Formulação combinada de Fourier--Chebyshev}
+
+A estratégia adotada nesta IC consiste em combinar duas escolhas espectrais naturais. A primeira é a expansão de Fourier na variável temporal, motivada pela periodicidade procurada:
+\[
+u(x,t+T)=u(x,t).
+\]
+Introduzindo \(\omega=2\pi/T\), escreve-se formalmente
+\[
+u(x,t)\sim \sum_{k\in\mathbb{Z}}\widehat{u}_k(x)e^{ik\omega t}.
+\]
+A principal vantagem dessa representação é que a derivada temporal atua diagonalmente sobre os modos:
+\[
+\frac{\partial}{\partial t}e^{ik\omega t}=ik\omega e^{ik\omega t}.
+\]
+Portanto, a diferenciação temporal é convertida em uma multiplicação algébrica pelo fator \(ik\omega\).
+
+A segunda escolha é a aproximação espacial de cada coeficiente \(\widehat{u}_k(x)\) por polinômios de Chebyshev, adequada para domínios limitados. Assim,
+\[
+\widehat{u}_k(x)\approx \sum_{m=0}^{N}c_m^{(k)}T_m(x).
+\]
+Na formulação nodal, essa aproximação é realizada nos pontos de Chebyshev--Gauss--Lobatto, e as derivadas espaciais são representadas por matrizes de diferenciação.
+
+Combinando as duas aproximações, obtém-se
+\[
+u(x,t)\approx \sum_{k=-K}^{K}\left(\sum_{m=0}^{N} c_m^{(k)}T_m(x)\right)e^{ik\omega t}.
+\]
+Essa expressão resume a ideia central do método: Fourier incorpora a periodicidade temporal, enquanto Chebyshev fornece alta resolução espacial em um intervalo finito.
+
+Equivalentemente, no contexto nodal de colocação, para cada modo temporal \(k\), a função espacial \(\widehat{u}_k(x)\) é substituída por seu interpolante de Chebyshev, e a equação correspondente é imposta nos nós. No caso linear, essa separação reduz a EDP periódica no tempo a uma família de sistemas lineares independentes. Se \(A\) representa o operador espacial discretizado, a estrutura modal típica é
+\[
+(ik\omega I-A)\widehat{U}_k=\widehat{F}_k.
+\]
+Essa é precisamente a estrutura algébrica explorada nos algoritmos implementados neste trabalho.
+
+A formulação Fourier--Chebyshev, portanto, não surge como uma combinação arbitrária de técnicas. Ela reflete a geometria do problema: periodicidade em uma variável e domínio limitado na outra. Essa coerência entre estrutura do problema e escolha da base é uma das principais razões da eficiência dos métodos espectrais quando aplicados a soluções suficientemente regulares.
+
+\section{Problema modelo e algoritmo}
+
+\subsection{Equação do calor unidimensional}
+
+Para explicitar a metodologia adotada neste trabalho, consideremos primeiro a equação do calor unidimensional
+\[
+u_t(x,t)=u_{xx}(x,t)+f(x,t),
+\qquad (x,t)\in (-1,1)\times\mathbb{R},
+\]
+sujeita às condições de contorno de Dirichlet homogêneas
+\[
+u(-1,t)=u(1,t)=0,
+\]
+e à condição de periodicidade temporal
+\[
+u(x,t)=u(x,t+T),
+\qquad T>0.
+\]
+Supõe-se, além disso, que a forçante \(f=f(x,t)\) seja \(T\)-periódica em \(t\).
+
+Escrevendo as expansões de Fourier
+\[
+u(x,t)\sim \sum_{k\in\mathbb{Z}}\widehat{u}_k(x)e^{ik\omega t},
+\qquad
+f(x,t)\sim \sum_{k\in\mathbb{Z}}\widehat{f}_k(x)e^{ik\omega t},
+\qquad
+\omega=\frac{2\pi}{T},
+\]
+e identificando modo a modo, obtém-se
+\[
+ik\omega\,\widehat{u}_k(x)=\widehat{u}_k''(x)+\widehat{f}_k(x),
+\qquad
+\widehat{u}_k(-1)=\widehat{u}_k(1)=0.
+\]
+
+Para a discretização espacial, adotam-se os pontos de Chebyshev--Gauss--Lobatto
+\[
+x_i=\cos\left(\frac{i\pi}{N}\right),
+\qquad i=0,1,\dots,N,
+\]
+e a matriz de diferenciação \(D\). Denotando por \(D^{(2)}=D^2\) a matriz associada à segunda derivada e restringindo-a aos nós internos, introduz-se
+\[
+A=\left(D^{(2)}\right)_{1:N-1,\,1:N-1}.
+\]
+Para cada modo \(k\), definem-se os vetores
+\[
+\mathbf{u}_k=
+\begin{bmatrix}
+\widehat{u}_k(x_1)\\
+\widehat{u}_k(x_2)\\
+\vdots\\
+\widehat{u}_k(x_{N-1})
+\end{bmatrix},
+\qquad
+\mathbf{b}_k=
+\begin{bmatrix}
+\widehat{f}_k(x_1)\\
+\widehat{f}_k(x_2)\\
+\vdots\\
+\widehat{f}_k(x_{N-1})
+\end{bmatrix}.
+\]
+A discretização conduz, então, para cada \(k\in\mathbb{Z}\), ao sistema linear
+\[
+\left(ik\omega I-A\right)\mathbf{u}_k=\mathbf{b}_k.
+\]
+
+\subsection{Extensão bidimensional}
+
+No caso bidimensional, considera-se a equação do calor em
+\[
+\Omega=(-1,1)\times(-1,1),
+\]
+isto é,
+\[
+u_t(x,y,t)=\Delta u(x,y,t)+f(x,y,t),
+\qquad (x,y,t)\in \Omega\times\mathbb{R},
+\]
+com condições de Dirichlet homogêneas na fronteira de \(\Omega\) e periodicidade temporal de período \(T\). Depois da expansão de Fourier em \(t\), cada modo satisfaz um problema elíptico da forma
+\[
+ik\omega\,\widehat{u}_k(x,y)=\Delta\widehat{u}_k(x,y)+\widehat{f}_k(x,y).
+\]
+
+A discretização por colocação de Chebyshev em cada variável espacial conduz a um Laplaciano discreto bidimensional. Se \(A_x\) e \(A_y\) denotam as matrizes associadas às segundas derivadas discretas nas direções \(x\) e \(y\), então o operador discreto pode ser escrito, em formulação vetorial, por meio de produtos de Kronecker:
+\[
+A_{2D}=I\otimes A_x + A_y\otimes I.
+\]
+Assim, para cada modo temporal \(k\), obtém-se novamente um sistema linear desacoplado
+\[
+\left(ik\omega I-A_{2D}\right)\mathbf{u}_k=\mathbf{b}_k,
+\]
+o que preserva a filosofia da formulação unidimensional: a periodicidade é tratada por Fourier e a estrutura espacial, por Chebyshev.
+
+\subsection{Descrição algorítmica}
+
+Com base nessa formulação, o algoritmo numérico pode ser descrito pelas seguintes etapas:
+
+\begin{enumerate}
+    \item Fixam-se os parâmetros \(N\) e \(K\), correspondentes, respectivamente, ao número de pontos de Chebyshev na variável espacial e ao número de modos de Fourier na variável temporal.
+
+    \item Constroem-se os pontos de Chebyshev--Gauss--Lobatto e a matriz de diferenciação \(D\). Em seguida, calcula-se \(D^{(2)}=D^2\) e monta-se o operador discreto espacial apropriado ao problema, unidimensional ou bidimensional.
+
+    \item Define-se o período \(T\) e a frequência fundamental \(\omega=2\pi/T\).
+
+    \item Escolhem-se \(N_t=2K+1\) amostras igualmente espaçadas no intervalo \([0,T)\), sem repetir o ponto final periódico.
+
+    \item Avalia-se a forçante na malha espaço-temporal e calculam-se, por FFT, os coeficientes temporais \(\widehat{b}_k\).
+
+    \item Para cada modo \(k=-K,\dots,K\), resolve-se o sistema linear
+    \[
+    \left(ik\omega I-A\right)\mathbf{u}_k=\mathbf{b}_k,
+    \]
+    ou sua versão bidimensional, conforme o problema considerado.
+
+    \item Reconstrói-se a solução aproximada por transformada inversa ou, equivalentemente, pela soma truncada dos modos de Fourier.
+
+    \item Quando uma solução exata é conhecida, calcula-se o erro em uma norma adequada; quando isso não ocorre, pode-se monitorar o resíduo discreto do problema como critério de validação numérica.
+\end{enumerate}
+
+\subsection{Observações sobre a implementação}
+
+A implementação utilizada neste trabalho segue exatamente essa decomposição. No caso de sistemas lineares finito-dimensionais, os coeficientes temporais da forçante são obtidos por FFT, e para cada frequência resolve-se um sistema linear do tipo
+\[
+\left(i k\omega I-A\right)\widehat{x}_k=\widehat{b}_k.
+\]
+No caso das EDPs, essa mesma ideia é preservada, substituindo-se o operador espacial contínuo por sua versão matricial discreta construída a partir de Chebyshev.
+
+Essa organização tem duas vantagens principais. Em primeiro lugar, a periodicidade é incorporada diretamente no espaço das soluções aproximadas, dispensando esquemas de avanço temporal. Em segundo lugar, a validação do algoritmo pode ser feita tanto por comparação com soluções exatas previamente construídas quanto pelo monitoramento do resíduo discreto do problema, o que é particularmente útil em situações em que a solução analítica não é conhecida.
+
+Mais explicitamente, no caso de um sistema linear, uma vez reconstruída a aproximação \(U_K(t)\), pode-se calcular
+\[
+R_K(t)=U_K'(t)-AU_K(t)-b(t).
+\]
+Analogamente, para a equação do calor discretizada no espaço, considera-se
+\[
+R_K(t)=U_K'(t)-AU_K(t)-B(t),
+\]
+ou, na escrita contínua correspondente,
+\[
+R_K(x,t)=\partial_t u_K(x,t)-\mathcal{L}_x u_K(x,t)-f(x,t).
+\]
+Assim, mesmo na ausência de solução exata, a norma do resíduo fornece uma medida direta de quanto a aproximação satisfaz a equação diferencial após a discretização. Esse critério complementa a análise do erro e auxilia na identificação de inconsistências na implementação, como sinais incorretos, problemas na montagem do operador espacial ou erros no cálculo dos coeficientes de Fourier da forçante.

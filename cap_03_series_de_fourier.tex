@@ -1,0 +1,841 @@
+\chapter{Séries de Fourier}
+
+\section{Periodicidade}
+
+A noção de periodicidade expressa a ideia cíclica do comportamento de uma função ao longo de seu domínio. Assim, uma função \(f:\mathbb{R}\to\mathbb{R}\), diz-se periódica de período \(T\neq 0\) se
+\[
+f(x+T)=f(x), \qquad \forall x\in\mathbb{R}.
+\]
+Nesse caso, \(T\) é chamado um período de \(f\). Além disso, se \(T\) é período de \(f\), então \(kT\) também é período para todo \(k\in\mathbb{Z}\setminus\{0\}\). Portanto, uma função periódica admite, em geral, infinitos períodos.
+
+\subsection{Período fundamental}
+
+Embora uma função periódica admita infinitos períodos, a existência de um período fundamental não é, em geral, imediata. Entretanto, no caso de funções contínuas e não constantes, é possível garantir a existência de um menor período positivo, chamado período fundamental.
+
+Mais precisamente, o período fundamental é o menor número \(T_0>0\) tal que
+\[
+f(x+T_0)=f(x), \qquad \forall x\in\mathbb{R}.
+\]
+Equivalentemente, se \(S\) denota o conjunto dos períodos positivos de \(f\), então
+\[
+T_0=\min S.
+\]
+
+Usualmente, emprega-se simplesmente o termo período, ficando implícito que se trata do período fundamental. Nesse contexto, diz-se que \(f\) é \(T_0\)-periódica.
+
+A existência do período fundamental pode ser assegurada pelo resultado a seguir.
+
+\begin{proposicao}
+Seja \(f:\mathbb{R}\to\mathbb{R}\) uma função contínua, periódica e não constante. Então existe \(T_0>0\) tal que
+\[
+f(x+T_0)=f(x), \qquad \forall x\in\mathbb{R},
+\]
+e, além disso, se \(T>0\) é qualquer período de \(f\), então
+\[
+T_0\le T.
+\]
+Em particular, \(T_0\) é o período fundamental de \(f\).
+\end{proposicao}
+
+\begin{proof}
+Considere o conjunto dos períodos positivos de \(f\),
+\[
+S=\{T>0:\ f(x+T)=f(x),\ \forall x\in\mathbb{R}\}.
+\]
+Como \(f\) é periódica, existe ao menos um período não nulo. Além disso, se \(T\) é período de \(f\), então \(-T\) também é período; logo, pode-se tomar um período positivo. Decorre disso que \(S\neq\varnothing\).
+
+Definindo
+\[
+\omega:=\inf S.
+\]
+Como \(S\subset (0,\infty)\), segue que \(\omega\ge 0\).
+
+Vamos mostrar inicialmente que \(\omega>0\). Supondo, por absurdo, que \(\omega=0\). Então, pela definição de ínfimo, para todo \(\varepsilon>0\) existe \(T\in S\) tal que
+\[
+0<T<\varepsilon.
+\]
+Portanto, existem em \(S\) períodos positivos arbitrariamente pequenos. Em particular, pode-se escolher uma sequência \((T_n)\subset S\) tal que
+\[
+T_n\to 0.
+\]
+
+Fixemos \(x,y\in\mathbb{R}\) arbitrários e definamos o deslocamento
+\[
+h:=y-x.
+\]
+Basta mostrar que
+\[
+f(y)=f(x).
+\]
+para cada \(x, y\) no domínio de \(f\).
+
+Para isso, utilizamos a seguinte estratégia, para cada \(n\in\mathbb{N}\), escolhe-se um inteiro \(k_n\in\mathbb{Z}\) tal que
+\[
+\left|\frac{h}{T_n}-k_n\right|\le 1.
+\]
+Observe que tal estratégia é adequada e uma escolha conveniente é
+\[
+k_n=\left\lfloor \frac{h}{T_n}\right\rfloor,
+\]
+pois, pela propriedade da parte inteira,
+\[
+k_n\le \frac{h}{T_n}<k_n+1.
+\]
+Multiplicando por \(T_n>0\), obtemos
+\[
+k_nT_n\le h<(k_n+1)T_n,
+\]
+de onde segue que
+\[
+0\le h-k_nT_n<T_n.
+\]
+Em particular,
+\[
+|h-k_nT_n|\le T_n.
+\]
+Como \(T_n\to 0\), conclui-se que
+\[
+|h-k_nT_n|\to 0,
+\]
+isto é,
+\[
+k_nT_n\to h.
+\]
+Consequentemente,
+\[
+x+k_nT_n\to x+h=y.
+\]
+
+Além disso, como \(T_n\) é período de \(f\), todo múltiplo inteiro \(k_nT_n\) também é período. Portanto,
+\[
+f(x+k_nT_n)=f(x), \qquad \forall n\in\mathbb{N}.
+\]
+Passando ao limite quando \(n\to\infty\) e usando a continuidade de \(f\), obtemos
+\[
+f(y)=\lim_{n\to\infty}f(x+k_nT_n)=f(x).
+\]
+Como \(x,y\in\mathbb{R}\) são arbitrários, segue que \(f\) é constante, o que contradiz a hipótese. Logo,
+\[
+\omega>0.
+\]
+
+Resta mostrar que \(\omega\in S\). Pela definição de ínfimo, existe uma sequência \((\tau_n)\subset S\) tal que
+\[
+\tau_n\to\omega.
+\]
+Fixe \(x\in\mathbb{R}\). Como \(\tau_n\in S\), cada \(\tau_n\) é período de \(f\), de modo que
+\[
+f(x+\tau_n)=f(x), \qquad \forall n\in\mathbb{N}.
+\]
+Logo, a sequência \(\bigl(f(x+\tau_n)\bigr)\) é constante e, portanto,
+\[
+f(x+\tau_n)\to f(x).
+\]
+Por outro lado, de \(\tau_n\to\omega\) segue que
+\[
+x+\tau_n\to x+\omega.
+\]
+Pela continuidade de \(f\),
+\[
+f(x+\tau_n)\to f(x+\omega).
+\]
+Comparando os limites, obtemos
+\[
+f(x+\omega)=f(x).
+\]
+Como \(x\in\mathbb{R}\) é arbitrário e \(\omega>0\), concluímos que \(\omega\in S\).
+
+Por fim, como \(\omega=\inf S\) e \(\omega\in S\), segue que
+\[
+\omega=\min S.
+\]
+Tomando
+\[
+T_0:=\omega,
+\]
+temos que \(T_0>0\), \(T_0\in S\) e, para todo \(T\in S\),
+\[
+T_0\le T.
+\]
+Isto é, \(T_0\) é o menor período positivo de \(f\), ou seja, o período fundamental de \(f\).
+\end{proof}
+Esse resultado justifica a análise a um intervalo fundamental de periodicidade.
+
+
+\subsection{Periodicidade da derivada}
+
+\begin{proposicao}
+Seja $f:\mathbb{R}\to\mathbb{R}$ uma função diferenciável e seja $T\neq 0$ um período de $f$, isto é,
+\[
+f(x+T)=f(x), \qquad \forall x\in\mathbb{R}.
+\]
+Então $T$ também é um período de $f'$.
+\end{proposicao}
+
+\begin{proof}
+Pela definição de derivada, para todo $x\in\mathbb{R}$,
+\[
+f'(x+T)=\lim_{h\to 0}\frac{f(x+T+h)-f(x+T)}{h}.
+\]
+Como $T$ é um período de $f$, tem-se, para quaisquer $x,h\in\mathbb{R}$,
+\[
+f(x+T+h)=f(x+h)
+\quad\text{e}\quad
+f(x+T)=f(x).
+\]
+Substituindo essas igualdades na expressão anterior, obtemos
+\[
+f'(x+T)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}=f'(x).
+\]
+Logo,
+\[
+f'(x+T)=f'(x), \qquad \forall x\in\mathbb{R},
+\]
+e, portanto, $T$ é também um período de $f'$.
+\end{proof}
+
+A proposição garante que a derivada preserva a periodicidade no sentido de que se $f$ é uma função $T-$periódica, então sua derivada $f'$ também é $T-$periódica. 
+
+\subsection{Propriedades integrais de funções periódicas}
+
+Apresentamos, a seguir, algumas propriedades integrais básicas de funções periódicas, que serão úteis no desenvolvimento posterior. Seja \(f:\mathbb{R}\to\mathbb{R}\) uma função contínua e \(\omega\)-periódica, com \(\omega>0\), isto é,
+\[
+f(x+\omega)=f(x), \qquad \forall x\in\mathbb{R}.
+\]
+
+Inicialmente, mostremos que a integral de \(f\) em qualquer intervalo de comprimento \(\omega\) independe do ponto inicial. Mais precisamente, para todo \(a\in\mathbb{R}\),
+\[
+\int_a^{a+\omega} f(t)\,dt=\int_0^{\omega} f(t)\,dt.
+\]
+
+De fato, definindo
+\[
+G(a)=\int_a^{a+\omega} f(t)\,dt, \qquad a\in\mathbb{R},
+\]
+e aplicando a regra de Leibniz, obtemos
+\[
+G'(a)=f(a+\omega)-f(a).
+\]
+Como \(f\) é \(\omega\)-periódica, vale \(f(a+\omega)=f(a)\) para todo \(a\in\mathbb{R}\). Logo,
+\[
+G'(a)=0, \qquad \forall a\in\mathbb{R}.
+\]
+Portanto, \(G\) é constante. Em particular, tomando \(a=0\), segue que
+\[
+G(a)=G(0)=\int_0^{\omega} f(t)\,dt,
+\]
+isto é,
+\[
+\int_a^{a+\omega} f(t)\,dt=\int_0^{\omega} f(t)\,dt,
+\qquad \forall a\in\mathbb{R}.
+\]
+
+Esse resultado mostra que a integral de uma função periódica em um período é invariante por translação. Em outras palavras, para quaisquer \(a,h\in\mathbb{R}\),
+\[
+\int_a^{a+\omega} f(t)\,dt
+=
+\int_{a+h}^{a+h+\omega} f(t)\,dt.
+\]
+
+Consideremos agora a função
+\[
+F(x)=\int_0^x f(t)\,dt.
+\]
+Pergunta-se em que condições \(F\) também é periódica. Mostremos que isso ocorre se, e somente se,
+\[
+\int_0^{\omega} f(t)\,dt=0.
+\]
+Equivalentemente, \(F\) é periódica se, e somente se, a média de \(f\) em um período é nula, isto é,
+\[
+\frac{1}{\omega}\int_0^{\omega} f(t)\,dt=0.
+\]
+
+De fato, para todo \(x\in\mathbb{R}\), tem-se
+\[
+F(x+\omega)-F(x)
+=
+\int_0^{x+\omega} f(t)\,dt-\int_0^x f(t)\,dt
+=
+\int_x^{x+\omega} f(t)\,dt.
+\]
+Pela propriedade anteriormente demonstrada, a integral no lado direito independe do ponto inicial, de modo que
+\[
+\int_x^{x+\omega} f(t)\,dt=\int_0^{\omega} f(t)\,dt.
+\]
+Assim,
+\[
+F(x+\omega)-F(x)=\int_0^{\omega} f(t)\,dt,
+\qquad \forall x\in\mathbb{R}.
+\]
+Portanto, \(F(x+\omega)=F(x)\) para todo \(x\in\mathbb{R}\) se, e somente se,
+\[
+\int_0^{\omega} f(t)\,dt=0.
+\]
+
+Conclui-se, assim, que a primitiva de uma função periódica não é, em geral, periódica. A condição que garante essa periodicidade é precisamente o cancelamento da média de \(f\) em um período. \hfill \(\square\)
+
+
+\section{Noções sobre regularidade e convergência}
+
+Esta seção reúne apenas as noções de regularidade e convergência que serão utilizadas ao longo do capítulo. O objetivo é introduzir o mínimo necessário para enunciar e interpretar os principais resultados sobre séries de Fourier, sem desenvolver uma teoria geral de séries de funções além do que será efetivamente utilizado neste trabalho.
+
+\subsection{Limites laterais e descontinuidade de primeira espécie}
+
+Dado \(c\in\mathbb{R}\), denotamos por
+\[
+f(c^+) = \lim_{x\to c^+} f(x)
+\qquad \text{e} \qquad
+f(c^-) = \lim_{x\to c^-} f(x)
+\]
+os limites laterais de \(f\) em \(c\), quando existirem.
+
+Diz-se que \(f\) possui uma \emph{descontinuidade de primeira espécie} em \(x=c\) quando \(f\) não é contínua nesse ponto, mas os limites laterais \(f(c^-)\) e \(f(c^+)\) existem e são finitos. Em particular, quando esses limites são distintos, ocorre uma \emph{descontinuidade de salto}. Essa noção é importante no contexto das séries de Fourier, pois os resultados clássicos de convergência admitem precisamente esse tipo de descontinuidade.
+
+\subsection{Funções seccionalmente contínuas e seccionalmente suaves}
+
+Uma função \(f:[a,b]\to\mathbb{R}\) será dita \emph{seccionalmente contínua}, ou \emph{contínua por partes}, se possui apenas um número finito de descontinuidades de primeira espécie em \([a,b]\) e é contínua nos subintervalos determinados por esses pontos.
+
+Essa hipótese é suficientemente ampla para abranger funções definidas por partes e, ao mesmo tempo, suficientemente forte para garantir que \(f\) seja limitada e integrável em \([a,b]\). Por isso, ela é adequada para a definição dos coeficientes de Fourier.
+
+Em muitos resultados, exige-se ainda uma regularidade adicional. Diremos que \(f\) é \emph{seccionalmente suave} quando \(f\) é contínua por partes e sua derivada \(f'\) também é contínua por partes nos intervalos em que está definida. Essa hipótese será usada quando forem necessários resultados mais fortes de convergência ou quando se estudarem operações como diferenciação termo a termo.
+
+\subsection{Convergência pontual e uniforme}
+
+Seja
+\[
+\sum_{n=0}^{\infty} f_n(x)
+\]
+uma série de funções definida em um conjunto \(E\), e sejam
+\[
+S_N(x)=\sum_{n=0}^{N} f_n(x)
+\]
+as suas somas parciais.
+
+Diz-se que a série converge \emph{pontualmente} para uma função \(S:E\to\mathbb{R}\) se, para todo \(x\in E\),
+\[
+\lim_{N\to\infty} S_N(x)=S(x).
+\]
+
+Diz-se que a série converge \emph{uniformemente} para \(S\) em \(E\) se
+\[
+\sup_{x\in E}|S_N(x)-S(x)| \longrightarrow 0
+\qquad \text{quando } N\to\infty.
+\]
+
+A convergência uniforme é mais forte do que a pontual, pois controla simultaneamente o erro de aproximação em todo o conjunto \(E\). No que segue, essas noções serão utilizadas apenas como linguagem de base para discutir a convergência das séries de Fourier, que constitui o foco principal desta seção.
+
+\subsubsection{Definição da série de Fourier e fórmulas de Euler-Fourier}
+
+\subsubsection{Ortogonalidade do sistema trigonométrico}
+
+Neste ponto, o interesse é compreender de que maneira uma função pode ser representada por combinações de funções trigonométricas. A teoria das séries de Fourier procura responder a essa questão e constitui uma ferramenta central na análise de problemas periódicos.
+
+De forma mais precisa, objetivamos investigar quais funções \(f:\mathbb{R}\to\mathbb{R}\) podem, ao menos formalmente, ser escritas na forma
+\[
+f(x)\sim \frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\left(\frac{n\pi x}{L}\right)+b_n\sin\left(\frac{n\pi x}{L}\right)\right).
+\]
+O símbolo \(\sim\) indica que à função \(f\) se associa uma sequência de coeficientes de Fourier determinada de modo único, sem que isso implique, a priori, que a soma da série coincida com \(f\). Assim, além da determinação dos coeficientes, torna-se essencial compreender em que sentido essa expansão converge.
+
+Para obter as fórmulas dos coeficientes de Fourier, recorre-se à ortogonalidade do sistema trigonométrico. Na teoria das séries de Fourier, essa propriedade desempenha papel fundamental porque permite separar os diferentes modos da expansão.
+
+Para formalizar essa ideia, considera-se o produto interno usual em \(L^2([-L,L])\), definido por
+\[
+\langle f,g\rangle = \int_{-L}^{L} f(x)\,g(x)\,dx.
+\]
+
+Diz-se que uma família de funções \(\{\phi_n\}\) é ortogonal em \([-L,L]\) se
+\[
+\langle \phi_m,\phi_n\rangle = 0,
+\qquad m\neq n.
+\]
+
+No caso do sistema trigonométrico, tem-se que as funções
+\[
+1,\qquad \cos\left(\frac{n\pi x}{L}\right),\qquad \sin\left(\frac{n\pi x}{L}\right),
+\qquad n\in\mathbb{N},
+\]
+formam um sistema ortogonal em \([-L,L]\). Mais precisamente,
+\[
+\int_{-L}^{L}\cos\left(\frac{n\pi x}{L}\right)\cos\left(\frac{m\pi x}{L}\right)\,dx
+=
+\begin{cases}
+0, & n\neq m,\\[0.2cm]
+L, & n=m,
+\end{cases}
+\]
+\[
+\int_{-L}^{L}\sin\left(\frac{n\pi x}{L}\right)\sin\left(\frac{m\pi x}{L}\right)\,dx
+=
+\begin{cases}
+0, & n\neq m,\\[0.2cm]
+L, & n=m,
+\end{cases}
+\]
+e
+\[
+\int_{-L}^{L}\cos\left(\frac{n\pi x}{L}\right)\sin\left(\frac{m\pi x}{L}\right)\,dx=0,
+\qquad \forall\,m,n\in\mathbb{N}.
+\]
+Além disso,
+\[
+\int_{-L}^{L}\cos\left(\frac{n\pi x}{L}\right)\,dx=0,
+\qquad
+\int_{-L}^{L}\sin\left(\frac{n\pi x}{L}\right)\,dx=0,
+\qquad n\geq 1,
+\]
+enquanto
+\[
+\int_{-L}^{L}1\,dx=2L.
+\]
+
+Supondo formalmente que \(f\) admita uma expansão trigonométrica da forma
+\[
+\frac{a_0}{2}
++\sum_{n=1}^{\infty}
+\left(
+a_n\cos\left(\frac{n\pi x}{L}\right)
++
+b_n\sin\left(\frac{n\pi x}{L}\right)
+\right),
+\]
+multiplicando essa expressão por
+\[
+1,\,
+\cos\left(\frac{m\pi x}{L}\right)
+\quad \text{ou} \quad
+\sin\left(\frac{m\pi x}{L}\right),
+\]
+e integrando em \([-L,L]\), as relações de ortogonalidade permitem isolar cada coeficiente. Desse procedimento resultam as fórmulas de Euler--Fourier:
+\[
+a_0=\frac{1}{L}\int_{-L}^{L}f(x)\,dx,
+\]
+\[
+a_n=\frac{1}{L}\int_{-L}^{L}
+f(x)\cos\left(\frac{n\pi x}{L}\right)\,dx,
+\qquad n\geq 1,
+\]
+\[
+b_n=\frac{1}{L}\int_{-L}^{L}
+f(x)\sin\left(\frac{n\pi x}{L}\right)\,dx,
+\qquad n\geq 1.
+\]
+
+Portanto, a ortogonalidade fornece o mecanismo algébrico que separa os diferentes modos trigonométricos da expansão, enquanto a integrabilidade de \(f\) garante que as integrais envolvidas estejam bem definidas.
+
+Para isso, basta supor inicialmente que
+\[
+f:[-L,L]\to\mathbb{R}
+\]
+seja integrável em \([-L,L]\). De fato, como as funções
+\[
+\cos\left(\frac{n\pi x}{L}\right)
+\qquad \text{e} \qquad
+\sin\left(\frac{n\pi x}{L}\right)
+\]
+são contínuas e limitadas nesse intervalo, os produtos
+\[
+f(x)\cos\left(\frac{n\pi x}{L}\right)
+\qquad \text{e} \qquad
+f(x)\sin\left(\frac{n\pi x}{L}\right)
+\]
+também são integráveis. Logo, as integrais que definem os coeficientes de Fourier fazem sentido sempre que \(f\) for integrável em \([-L,L]\).
+
+No contexto deste trabalho, funções contínuas por partes ou seccionalmente regulares satisfazem naturalmente essa hipótese.
+
+\subsection{Convergência pontual das séries de Fourier}
+
+Uma vez determinada a série de Fourier associada a uma função periódica, surge a questão de saber em que sentido essa expansão representa a função. O primeiro resultado fundamental nessa direção é o teorema de convergência pontual, que descreve o valor para o qual a série converge em cada ponto.
+
+Sejam
+\[
+f(x^+)=\lim_{h\to 0^+}f(x+h)
+\qquad \text{e} \qquad
+f(x^-)=\lim_{h\to 0^-}f(x+h),
+\]
+os limites laterais de \(f\) no ponto \(x\).
+
+\begin{teorema}
+Seja \(f:\mathbb{R}\to\mathbb{R}\) uma função \(2L\)-periódica e seccionalmente suave em \([-L,L]\). Então, para todo \(x\in\mathbb{R}\), a série de Fourier de \(f\) converge para
+\[
+\frac{f(x^+)+f(x^-)}{2}.
+\]
+\end{teorema}
+
+Em particular, nos pontos em que \(f\) é contínua, a série de Fourier converge para o próprio valor da função. Já nos pontos de descontinuidade de salto, a convergência ocorre para a média dos limites laterais. Esse resultado mostra que a expansão de Fourier recupera a função nos pontos regulares e descreve de forma precisa o comportamento nos pontos de descontinuidade controlada.
+
+Além disso, quando \(f\in L^2([-L,L])\), os coeficientes de Fourier admitem uma interpretação geométrica como projeções de \(f\) sobre os modos do sistema trigonométrico ortogonal. Essa observação será especialmente útil nas formulações espectrais posteriores.
+
+\subsection{Convergência uniforme das séries de Fourier}
+
+Além da convergência pontual, é natural investigar condições que garantam convergência uniforme. Esse tipo de convergência é mais forte, pois assegura que as somas parciais aproximam a função de maneira uniforme em todo o intervalo.
+
+\begin{teorema}
+Seja \(f:\mathbb{R}\to\mathbb{R}\) uma função \(2L\)-periódica e contínua. Suponha, além disso, que \(f'\) seja seccionalmente contínua em \([-L,L]\). Então a série de Fourier de \(f\) converge uniformemente para \(f\) em \(\mathbb{R}\).
+\end{teorema}
+
+Assim, em classes mais regulares de funções, a representação de Fourier não apenas converge ponto a ponto, mas o faz com controle global do erro. Em particular, para toda \(\varepsilon>0\), existe \(N\in\mathbb{N}\) tal que
+\[
+\left|f(x)-S_N(f)(x)\right|<\varepsilon,
+\qquad \forall x\in\mathbb{R},
+\]
+onde \(S_N(f)\) denota a \(N\)-ésima soma parcial da série de Fourier de \(f\).
+
+No contexto deste trabalho, esse resultado é importante porque justifica o uso de truncações finitas da expansão trigonométrica como aproximações globais da função periódica considerada.
+
+\subsection{Operações sobre a série: integração e diferenciação}
+
+\subsubsection{Integração termo a termo de séries de Fourier}
+
+Uma vez estabelecida a série de Fourier de uma função periódica, é natural investigar como operações analíticas, como integração e diferenciação, atuam sobre essa expansão. Entre essas operações, a integração termo a termo é, em geral, mais estável do que a diferenciação, pois introduz fatores da ordem de \(1/n\), favorecendo o decaimento dos coeficientes.
+
+Seja
+\[
+f:[-L,L]\to\mathbb{R}
+\]
+uma função seccionalmente contínua, e seja ainda \(f\) sua extensão \(2L\)-periódica à reta. Suponha que sua série de Fourier seja dada por
+\[
+f(x)\sim \frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\left(\frac{n\pi x}{L}\right)+b_n\sin\left(\frac{n\pi x}{L}\right)\right).
+\]
+
+Integrando formalmente termo a termo, obtém-se
+\[
+\int f(x)\,dx
+\sim
+\frac{a_0}{2}x
++
+\sum_{n=1}^{\infty}
+\left(
+\frac{L a_n}{n\pi}\sin\left(\frac{n\pi x}{L}\right)
+-
+\frac{L b_n}{n\pi}\cos\left(\frac{n\pi x}{L}\right)
+\right)
++C.
+\]
+
+O termo linear \(\frac{a_0}{2}x\) mostra que a primitiva não é, em geral, periódica. Para contornar essa dificuldade, considera-se
+\[
+F(x)=\int_{x_0}^{x}f(t)\,dt-\frac{a_0}{2}(x-x_0),
+\]
+onde \(x_0\in\mathbb{R}\) é fixado. Como
+\[
+\frac{a_0}{2}=\frac{1}{2L}\int_{-L}^{L}f(t)\,dt,
+\]
+segue que
+\[
+F'(x)=f(x)-\frac{a_0}{2}.
+\]
+
+Além disso, \(F\) é \(2L\)-periódica. De fato,
+\[
+F(x+2L)-F(x)
+=
+\int_x^{x+2L}f(t)\,dt-a_0L,
+\]
+e, pela periodicidade de \(f\),
+\[
+\int_x^{x+2L}f(t)\,dt=\int_{-L}^{L}f(t)\,dt=La_0.
+\]
+Logo,
+\[
+F(x+2L)=F(x).
+\]
+
+Portanto, a série de Fourier de \(F\) é obtida integrando termo a termo a série de Fourier de \(f-\frac{a_0}{2}\), o que conduz à expansão
+\[
+F(x)\sim
+\sum_{n=1}^{\infty}
+\left(
+\frac{L a_n}{n\pi}\sin\left(\frac{n\pi x}{L}\right)
+-
+\frac{L b_n}{n\pi}\cos\left(\frac{n\pi x}{L}\right)
+\right).
+\]
+
+Esse resultado evidencia o efeito regularizador da integração: os coeficientes da série integrada passam a ser proporcionais a \(\frac{a_n}{n}\) e \(\frac{b_n}{n}\), o que melhora o seu comportamento de convergência.
+
+\subsubsection{Diferenciação termo a termo de séries de Fourier}
+
+A diferenciação termo a termo é mais delicada do que a integração, pois a derivada introduz fatores proporcionais a \(n\), o que pode comprometer a convergência da série obtida caso não sejam impostas hipóteses adicionais de regularidade.
+
+Seja \(f:[-L,L]\to\mathbb{R}\) uma função contínua, e seja ainda \(f\) sua extensão \(2L\)-periódica à reta. Suponha que \(f'\) exista em \((-L,L)\), exceto possivelmente em um número finito de pontos, e que \(f'\) seja seccionalmente contínua em \([-L,L]\). Se a série de Fourier de \(f\) é dada por
+\[
+f(x)\sim \frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\left(\frac{n\pi x}{L}\right)+b_n\sin\left(\frac{n\pi x}{L}\right)\right),
+\]
+então, derivando formalmente termo a termo, obtém-se
+\[
+f'(x)\sim \sum_{n=1}^{\infty}\left(\frac{n\pi}{L}b_n\cos\left(\frac{n\pi x}{L}\right)-\frac{n\pi}{L}a_n\sin\left(\frac{n\pi x}{L}\right)\right).
+\]
+
+Portanto, se escrevemos a série de Fourier de \(f'\) na forma
+\[
+f'(x)\sim \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(A_n\cos\left(\frac{n\pi x}{L}\right)+B_n\sin\left(\frac{n\pi x}{L}\right)\right),
+\]
+então
+\[
+A_0=0,\qquad
+A_n=\frac{n\pi}{L}b_n,\qquad
+B_n=-\frac{n\pi}{L}a_n,
+\qquad n\geq 1.
+\]
+
+Essas relações são obtidas pelas fórmulas dos coeficientes de Fourier aplicadas a \(f'\) e por integração por partes, usando a periodicidade de \(f\) para anular os termos de fronteira. Assim, sob as hipóteses assumidas, a série formalmente derivada coincide com a série de Fourier de \(f'\) nos pontos em que \(f'\) é contínua.
+
+Em síntese, enquanto a integração tende a melhorar o comportamento dos coeficientes, a diferenciação exige maior regularidade da função original. Essa distinção será importante nas aplicações a equações diferenciais e métodos espectrais.
+
+\subsection{Séries de senos e séries de cossenos}
+
+Em algumas situações, interessa representar em série trigonométrica uma função definida apenas no intervalo \([0,L]\). Para isso, é conveniente estendê-la a \([-L,L]\) e considerar, em seguida, sua extensão \(2L\)-periódica.
+
+Seja \(f:[0,L]\to\mathbb{R}\) uma função integrável.
+
+\paragraph{Extensão par e série de cossenos.}
+Define-se a extensão par de \(f\) por
+\[
+f_p(x)=
+\begin{cases}
+f(x), & 0\le x\le L,\\
+f(-x), & -L\le x<0.
+\end{cases}
+\]
+Como \(f_p\) é par, sua série de Fourier contém apenas termos de cosseno:
+\[
+f_p(x)\sim \frac{a_0}{2}+\sum_{n=1}^{\infty}a_n\cos\left(\frac{n\pi x}{L}\right),
+\]
+com
+\[
+a_0=\frac{2}{L}\int_0^L f(x)\,dx,
+\qquad
+a_n=\frac{2}{L}\int_0^L f(x)\cos\left(\frac{n\pi x}{L}\right)\,dx,
+\qquad n\geq 1.
+\]
+
+\paragraph{Extensão ímpar e série de senos.}
+Define-se a extensão ímpar de \(f\) por
+\[
+f_i(x)=
+\begin{cases}
+f(x), & 0\le x\le L,\\
+-f(-x), & -L\le x<0.
+\end{cases}
+\]
+Como \(f_i\) é ímpar, sua série de Fourier contém apenas termos de seno:
+\[
+f_i(x)\sim \sum_{n=1}^{\infty}b_n\sin\left(\frac{n\pi x}{L}\right),
+\]
+com
+\[
+b_n=\frac{2}{L}\int_0^L f(x)\sin\left(\frac{n\pi x}{L}\right)\,dx,
+\qquad n\geq 1.
+\]
+
+Essas representações são particularmente úteis em problemas clássicos de contorno. No presente trabalho, contudo, elas serão mencionadas apenas como casos particulares importantes da teoria geral das séries de Fourier, já que o foco principal recairá sobre a formulação periódica e sobre representações mais adequadas às etapas posteriores do estudo.
+
+\subsection{Forma complexa da série de Fourier}
+
+Em muitos contextos analíticos e computacionais, é conveniente reescrever a série de Fourier na forma complexa. Essa formulação reúne os termos de seno e cosseno em uma única expressão envolvendo exponenciais complexas e torna mais transparente a estrutura espectral da expansão.
+
+Considere a série de Fourier de uma função \(2L\)-periódica \(f\), escrita na forma real:
+\[
+f(x)\sim \frac{a_0}{2}+\sum_{n=1}^{\infty}
+\left(
+a_n\cos\left(\frac{n\pi x}{L}\right)
++
+b_n\sin\left(\frac{n\pi x}{L}\right)
+\right).
+\]
+
+Usando as identidades de Euler,
+\[
+\cos \theta=\frac{e^{i\theta}+e^{-i\theta}}{2},
+\qquad
+\sin \theta=\frac{e^{i\theta}-e^{-i\theta}}{2i},
+\]
+obtém-se
+\[
+f(x)\sim \sum_{n=-\infty}^{\infty} c_n e^{i\frac{n\pi x}{L}},
+\]
+onde
+\[
+c_0=\frac{a_0}{2},
+\qquad
+c_n=\frac{a_n-ib_n}{2}\quad (n\geq 1),
+\qquad
+c_{-n}=\frac{a_n+ib_n}{2}\quad (n\geq 1).
+\]
+
+Os coeficientes complexos podem ser escritos diretamente por
+\[
+c_n=\frac{1}{2L}\int_{-L}^{L}f(x)e^{-i\frac{n\pi x}{L}}\,dx,
+\qquad n\in\mathbb{Z}.
+\]
+
+A forma complexa é equivalente à forma trigonométrica real, mas apresenta vantagens importantes. Em particular, ela simplifica manipulações algébricas e será especialmente útil nas etapas seguintes, quando a periodicidade temporal for tratada em termos de modos exponenciais e em conexão com formulações espectrais.
+
+\subsection{Da representação em \texorpdfstring{\(L^2\)}{L2} à aproximação espectral temporal}
+
+A forma complexa da série de Fourier permite interpretar a decomposição de uma função periódica em termos de modos harmônicos. Para tornar essa ideia mais precisa no contexto funcional utilizado posteriormente, considera-se o espaço das funções \(T\)-periódicas quadraticamente integráveis,
+\[
+L^2_{\mathrm{per}}(0,T)=
+\left\{
+ f\in L^2_{\mathrm{loc}}(\mathbb{R})\,;\,
+ f(t+T)=f(t) \text{ para quase todo } t\in\mathbb{R}
+\right\}.
+\]
+Nesse espaço, define-se o produto interno
+\[
+\langle f,g\rangle
+=
+\frac{1}{T}\int_0^T f(t)\overline{g(t)}\,dt,
+\]
+e a norma associada
+\[
+\|f\|_{L^2(0,T)}
+=
+\left(\frac{1}{T}\int_0^T |f(t)|^2\,dt\right)^{1/2}.
+\]
+
+Para cada \(k\in\mathbb{Z}\), seja
+\[
+\varphi_k(t)=e^{ik\omega t},
+\qquad
+\omega=\frac{2\pi}{T}.
+\]
+Então o sistema
+\[
+\left\{e^{ik\omega t}\right\}_{k\in\mathbb{Z}}
+\]
+é ortonormal em \(L^2_{\mathrm{per}}(0,T)\). De fato, se \(k,m\in\mathbb{Z}\), então
+\[
+\langle \varphi_k,\varphi_m\rangle
+=
+\frac{1}{T}\int_0^T e^{ik\omega t}e^{-im\omega t}\,dt
+=
+\frac{1}{T}\int_0^T e^{i(k-m)\omega t}\,dt.
+\]
+Quando \(k=m\), essa integral é igual a \(1\). Quando \(k\neq m\), obtém-se
+\[
+\frac{1}{T}\int_0^T e^{i(k-m)\omega t}\,dt
+=
+\frac{1}{T}\left[
+\frac{e^{i(k-m)\omega t}}{i(k-m)\omega}
+\right]_0^T
+=
+\frac{e^{i(k-m)2\pi}-1}{i(k-m)\omega T}
+=0.
+\]
+Logo,
+\[
+\langle \varphi_k,\varphi_m\rangle=\delta_{km}.
+\]
+
+Além da ortonormalidade, um resultado fundamental da teoria de Fourier afirma que esse sistema é completo em \(L^2_{\mathrm{per}}(0,T)\). Assim, para toda função \(f\in L^2_{\mathrm{per}}(0,T)\), tem-se
+\[
+f(t)=\sum_{k\in\mathbb{Z}}\widehat f_k e^{ik\omega t}
+\quad
+\text{em } L^2(0,T),
+\]
+onde os coeficientes de Fourier são dados por
+\[
+\widehat f_k
+=
+\langle f,\varphi_k\rangle
+=
+\frac{1}{T}\int_0^T f(t)e^{-ik\omega t}\,dt.
+\]
+A igualdade acima deve ser entendida no sentido da convergência em média quadrática, isto é,
+\[
+\lim_{K\to\infty}
+\left\|
+f-
+\sum_{|k|\leq K}\widehat f_k e^{ik\omega t}
+\right\|_{L^2(0,T)}
+=0.
+\]
+Portanto, a aproximação de \(f\) por uma soma finita de modos de Fourier é matematicamente justificada pela completude do sistema trigonométrico em \(L^2\).
+
+Para cada \(K\in\mathbb{N}\), considera-se o subespaço finito-dimensional
+\[
+V_K=
+\operatorname{span}
+\left\{
+e^{ik\omega t}\,;\, |k|\leq K
+\right\}.
+\]
+A soma parcial
+\[
+P_K f(t)=
+\sum_{|k|\leq K}\widehat f_k e^{ik\omega t}
+\]
+pode ser interpretada como a projeção ortogonal de \(f\) sobre \(V_K\). Desse modo, entre todas as funções pertencentes a \(V_K\), \(P_Kf\) é a melhor aproximação de \(f\) no sentido da norma \(L^2\), ou seja,
+\[
+\|f-P_Kf\|_{L^2(0,T)}
+=
+\min_{v\in V_K}\|f-v\|_{L^2(0,T)}.
+\]
+
+A identidade de Parseval fornece ainda uma descrição quantitativa dessa aproximação. Com a normalização adotada, vale
+\[
+\|f\|_{L^2(0,T)}^2
+=
+\sum_{k\in\mathbb{Z}}|\widehat f_k|^2.
+\]
+Além disso, o erro associado ao truncamento espectral é dado por
+\[
+\|f-P_Kf\|_{L^2(0,T)}^2
+=
+\sum_{|k|>K}|\widehat f_k|^2.
+\]
+Assim, o erro de truncamento depende exatamente da energia contida nos modos de alta frequência que foram desprezados. Quando os coeficientes \(\widehat f_k\) decaem suficientemente rápido, a contribuição desses modos torna-se pequena, o que justifica o uso de uma aproximação finita.
+
+Essa observação é essencial para a formulação espectral temporal. Ao procurar uma solução \(T\)-periódica, passa-se a aproximá-la por
+\[
+u_K(t)=
+\sum_{|k|\leq K}u_k e^{ik\omega t}.
+\]
+Os coeficientes \(u_k\) tornam-se, então, as incógnitas do problema. Além disso, como
+\[
+\frac{d}{dt}\left(e^{ik\omega t}\right)
+=
+ik\omega e^{ik\omega t},
+\]
+a derivada temporal é transformada, no domínio de Fourier, em uma multiplicação algébrica por \(ik\omega\). De modo análogo,
+\[
+\frac{d^r}{dt^r}\left(e^{ik\omega t}\right)
+=
+(ik\omega)^r e^{ik\omega t}.
+\]
+Portanto, operadores diferenciais temporais passam a atuar diagonalmente sobre os modos de Fourier.
+
+Conclui-se, assim, que a expansão de Fourier não apenas representa funções periódicas, mas também fornece uma ferramenta natural para discretizar problemas diferenciais com periodicidade temporal. A completude do sistema trigonométrico justifica a escolha da base; a convergência em \(L^2\) justifica o truncamento; a identidade de Parseval quantifica o erro associado aos modos desprezados; e a ação diagonal da derivada sobre os modos de Fourier transforma operadores diferenciais temporais em operações algébricas sobre os coeficientes.
+
+
+
+\subsection{Aliasing como observação complementar}
+\label{subsec:aliasing-fourier}
+
+A formulação complexa de Fourier também permite compreender um fenômeno importante em implementações pseudoespectrais: o \emph{aliasing}. Em uma malha uniforme periódica com \(N\) pontos,
+\[
+x_j=\frac{2\pi j}{N},
+\qquad j=0,1,\dots,N-1,
+\]
+modos cujos índices diferem por múltiplos de \(N\) são indistinguíveis nos pontos da grade. De fato,
+\[
+e^{i(k+N)x_j}=e^{ikx_j}e^{iNx_j}=e^{ikx_j}e^{i2\pi j}=e^{ikx_j}.
+\]
+Logo, a amostragem discreta não consegue diferenciar completamente todos os modos da série infinita; ela representa apenas uma quantidade finita de frequências.
+
+Esse efeito é especialmente relevante em problemas não lineares. Se duas funções possuem modos até certa frequência \(K\), o produto entre elas pode gerar frequências até \(2K\). Quando essas frequências excedem o intervalo representável pela grade, elas podem ser reinterpretadas como modos de baixa frequência, contaminando o espectro calculado. Esse é o mecanismo básico do aliasing.
+
+Nos exemplos numéricos deste trabalho, os problemas tratados são lineares e as soluções fabricadas são suaves; portanto, o aliasing não é o fenômeno dominante nos resultados apresentados. Ainda assim, sua menção é importante porque a formulação Fourier--Chebyshev pode ser estendida a problemas não lineares periódicos. Nesses casos, técnicas de \emph{dealiasing}, como a regra \(2/3\) de Orszag ou o uso de malha ampliada por fator \(3/2\), tornam-se ferramentas importantes para evitar transferência artificial de energia entre modos.
+
+\subsection{Síntese do capítulo}
+
+Neste capítulo, reunimos os principais elementos da teoria de séries de Fourier necessários para o desenvolvimento deste trabalho. Inicialmente, introduzimos noções básicas de regularidade e convergência, suficientes para formular os resultados fundamentais sem desviar do foco principal da pesquisa.
+
+Em seguida, definimos a série de Fourier associada a uma função \(2L\)-periódica e deduzimos as fórmulas de Euler--Fourier a partir da ortogonalidade do sistema trigonométrico. Discutimos também resultados clássicos de convergência pontual e uniforme, destacando as hipóteses de regularidade envolvidas em cada caso.
+
+Posteriormente, examinamos o comportamento da série sob integração e diferenciação termo a termo, ressaltando que a integração tende a melhorar o decaimento dos coeficientes, enquanto a diferenciação exige maior regularidade. Apresentamos ainda, de forma breve, as séries de senos e de cossenos como casos particulares obtidos por extensões par e ímpar.
+
+Por fim, introduzimos a forma complexa da série de Fourier, que oferece uma representação mais compacta e mais adequada às formulações espectrais utilizadas nas etapas seguintes do trabalho. A partir dessa formulação, discutimos também a interpretação da expansão de Fourier como projeção ortogonal em \(L^2\), destacando o papel da completude, da identidade de Parseval e do erro de truncamento na aproximação espectral temporal. Incluímos ainda uma observação sobre aliasing, apresentada como tópico complementar relevante para extensões futuras a problemas não lineares.
+
+Desse modo, os resultados reunidos neste capítulo estabelecem a base teórica necessária para o estudo posterior de soluções periódicas em EDPs, preparando a passagem para métodos espectrais e para a decomposição de soluções em modos periódicos.

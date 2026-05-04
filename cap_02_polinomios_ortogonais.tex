@@ -1,0 +1,188 @@
+\chapter{Polinômios Ortogonais}
+
+\section{Noções gerais}
+
+A teoria dos polinômios ortogonais constitui uma das bases clássicas da aproximação e da análise numérica. Em vez da base algébrica usual \(1,x,x^2,\dots\), considera-se uma família de polinômios adaptada a um produto interno ponderado no intervalo de interesse. Essa mudança de perspectiva é especialmente útil porque incorpora, já na escolha da base, a geometria induzida pelo peso e pelo domínio do problema.
+
+Seja \(w:(a,b)\to \mathbb{R}\) uma função peso positiva e integrável em \((a,b)\). Define-se, então, o produto interno ponderado
+\[
+\langle f,g\rangle_w=\int_a^b f(x)g(x)\,w(x)\,dx.
+\]
+Uma sequência \((p_n)_{n\geq 0}\), em que cada \(p_n\) é um polinômio de grau \(n\), diz-se ortogonal com respeito a \(w\) quando
+\[
+\langle p_n,p_m\rangle_w=0,\qquad n\neq m.
+\]
+Se, além disso, cada \(p_n\) é tomado mônico, a sequência ortogonal fica unicamente determinada pelo par intervalo-peso.
+
+Do ponto de vista estrutural, um dos resultados centrais da teoria afirma que toda sequência de polinômios ortogonais satisfaz uma recorrência de três termos. Em sua forma geral, essa relação pode ser escrita como
+\[
+x\,p_n(x)=A_n p_{n+1}(x)+B_n p_n(x)+C_n p_{n-1}(x),
+\]
+e, na normalização mônica, como
+\[
+x\,p_n(x)=p_{n+1}(x)+\alpha_n p_n(x)+\beta_n p_{n-1}(x), \qquad n\geq 1.
+\]
+Essa propriedade revela que a multiplicação por \(x\) preserva uma estrutura tridiagonal na base ortogonal, fato que desempenha papel importante tanto na teoria quanto em algoritmos numéricos.
+
+Outro resultado fundamental diz respeito aos zeros. Se \(p_n\) é um polinômio ortogonal de grau \(n\), então ele possui exatamente \(n\) zeros reais, simples e contidos no interior do intervalo de ortogonalidade. Além disso, os zeros de polinômios consecutivos se intercalam. Essas propriedades são decisivas na construção das fórmulas de quadratura gaussiana.
+
+De fato, se \(p_n\) denota o polinômio ortogonal de grau \(n\), os nós da quadratura de Gauss são escolhidos justamente como os zeros de \(p_n\). Os pesos correspondentes são positivos, e a fórmula resultante é exata para polinômios de grau o mais alto possível dentro dessa classe. Desse modo, a teoria dos polinômios ortogonais fornece o fundamento matemático natural de uma das mais importantes famílias de fórmulas de integração numérica.
+
+\section{Polinômios de Jacobi}
+
+Entre as famílias clássicas em intervalos finitos, destacam-se os polinômios de Jacobi, denotados por \(P_n^{(\alpha,\beta)}\), com parâmetros \(\alpha,\beta>-1\). Eles são ortogonais em \([-1,1]\) com respeito ao peso
+\[
+w(x)=(1-x)^\alpha(1+x)^\beta.
+\]
+Essa família é especialmente relevante porque engloba, como casos particulares, diversas famílias clássicas, entre elas os polinômios de Legendre e os polinômios de Chebyshev. Por essa razão, os polinômios de Jacobi podem ser vistos como uma família-mãe na teoria clássica dos polinômios ortogonais em intervalos finitos.
+
+Uma representação explícita dessa família é dada pela fórmula de Rodrigues:
+\[
+P_n^{(\alpha,\beta)}(x)
+=
+\frac{(-1)^n}{2^n n!}(1-x)^{-\alpha}(1+x)^{-\beta}
+\frac{d^n}{dx^n}\Big[(1-x)^{n+\alpha}(1+x)^{n+\beta}\Big].
+\]
+Além disso, esses polinômios satisfazem a ortogonalidade
+\[
+\int_{-1}^{1}(1-x)^\alpha(1+x)^\beta
+P_m^{(\alpha,\beta)}(x)\,P_n^{(\alpha,\beta)}(x)\,dx=0,
+\qquad m\neq n.
+\]
+
+Os polinômios de Jacobi também se distinguem por satisfazerem uma equação diferencial linear de segunda ordem:
+\[
+(1-x^2)y''+\big(\beta-\alpha-(\alpha+\beta+2)x\big)y'
++n(n+\alpha+\beta+1)\,y=0.
+\]
+Essa equação evidencia a ligação entre ortogonalidade e problemas diferenciais do tipo Sturm--Liouville. No contexto desta IC, entretanto, o papel dos polinômios de Jacobi é principalmente organizador: eles fornecem o quadro geral dentro do qual os polinômios de Chebyshev aparecem como caso particular particularmente importante.
+
+\section{Polinômios de Chebyshev}
+
+Entre as famílias clássicas associadas ao intervalo \([-1,1]\), os polinômios de Chebyshev ocupam posição de destaque na teoria da aproximação e em métodos espectrais. Isso se deve, em particular, à sua definição explícita, às suas propriedades de ortogonalidade e ao excelente comportamento dos pontos a eles associados em processos de interpolação e discretização numérica.
+
+Os polinômios de Chebyshev de primeira espécie podem ser introduzidos como o caso particular dos polinômios de Jacobi correspondente a \(\alpha=\beta=-\tfrac12\). Contudo, para os fins deste trabalho, é mais conveniente adotá-los diretamente por sua definição trigonométrica.
+
+\subsection{Definição e propriedades básicas}
+
+Para \(x\in[-1,1]\), escreve-se \(x=\cos\theta\), com \(\theta\in[0,\pi]\), e define-se
+\[
+T_n(x)=\cos(n\theta)=\cos\bigl(n\arccos x\bigr), \qquad n\in\mathbb{N}_0.
+\]
+Essa expressão mostra imediatamente que cada \(T_n\) é um polinômio de grau \(n\). Os primeiros elementos da família são
+\[
+T_0(x)=1, \qquad T_1(x)=x.
+\]
+
+A partir da identidade trigonométrica
+\[
+\cos((n+1)\theta)=2\cos\theta\,\cos(n\theta)-\cos((n-1)\theta),
+\]
+obtém-se a recorrência de três termos
+\[
+T_{n+1}(x)=2x\,T_n(x)-T_{n-1}(x), \qquad n\geq 1.
+\]
+Essa relação permite gerar toda a família de maneira recursiva e será importante mais adiante em manipulações algébricas e computacionais.
+
+Além disso, para \(n\geq 1\), o termo dominante de \(T_n\) é dado por
+\[
+T_n(x)=2^{n-1}x^n+\text{termos de menor grau},
+\]
+de modo que \(T_n\) tem grau exatamente \(n\). Como \(|\cos(n\theta)|\leq 1\), segue também que
+\[
+|T_n(x)|\leq 1, \qquad x\in[-1,1].
+\]
+
+\subsection{Zeros, extremos e pontos notáveis}
+
+As propriedades geométricas de \(T_n\) desempenham papel central em aproximação espectral. Seus zeros são dados por
+\[
+x_k=\cos\left(\frac{(2k+1)\pi}{2n}\right), \qquad k=0,1,\dots,n-1.
+\]
+Esses pontos são precisamente os pontos de Chebyshev--Gauss associados à família.
+
+Os extremos de \(T_n\) em \([-1,1]\) ocorrem nos pontos
+\[
+\xi_j=\cos\left(\frac{j\pi}{n}\right), \qquad j=0,1,\dots,n,
+\]
+e, nesses pontos, vale
+\[
+T_n(\xi_j)=(-1)^j.
+\]
+Os pontos \(\xi_j\) são particularmente importantes em métodos espectrais e de interpolação. Eles são usualmente chamados pontos de Chebyshev--Gauss--Lobatto e serão utilizados, no capítulo seguinte, como nós de colocação e interpolação na variável espacial.
+
+\subsection{Ortogonalidade e normalização}
+
+Os polinômios de Chebyshev são ortogonais em \([-1,1]\) com respeito ao peso
+\[
+w(x)=\frac{1}{\sqrt{1-x^2}}, \qquad x\in(-1,1).
+\]
+Definindo o produto interno ponderado por
+\[
+\langle u,v\rangle_w=\int_{-1}^{1}u(x)v(x)w(x)\,dx,
+\]
+obtém-se
+\[
+\langle T_m,T_n\rangle_w=0, \qquad m\neq n.
+\]
+
+As normas quadráticas dessa família são
+\[
+\|T_0\|_w^2=\int_{-1}^{1}\frac{1}{\sqrt{1-x^2}}\,dx=\pi
+\]
+e, para \(n\geq 1\),
+\[
+\|T_n\|_w^2=\int_{-1}^{1}\frac{T_n(x)^2}{\sqrt{1-x^2}}\,dx=\frac{\pi}{2}.
+\]
+Assim, uma versão ortonormal da família é dada por
+\[
+\widehat{T}_0(x)=\frac{1}{\sqrt{\pi}},
+\qquad
+\widehat{T}_n(x)=\sqrt{\frac{2}{\pi}}\,T_n(x), \qquad n\geq 1.
+\]
+
+Esses resultados justificam a expansão de funções em séries de Chebyshev, de modo análogo ao que ocorre com séries de Fourier em contextos periódicos.
+
+
+\subsection{Relação com Fourier e propriedade minimax}
+
+A identidade
+\[
+T_n(\cos\theta)=\cos(n\theta)
+\]
+é uma das razões pelas quais os polinômios de Chebyshev são tão importantes em métodos espectrais. Ela mostra que uma expansão em Chebyshev pode ser entendida como uma série de cossenos após a mudança de variável
+\[
+x=\cos\theta.
+\]
+Com efeito, se
+\[
+f(x)\sim \sum_{n=0}^{\infty}a_nT_n(x),
+\]
+então, escrevendo \(x=\cos\theta\), obtém-se formalmente
+\[
+f(\cos\theta)\sim \sum_{n=0}^{\infty}a_n\cos(n\theta).
+\]
+Assim, os mesmos coeficientes que aparecem na expansão de Chebyshev de \(f(x)\) podem ser interpretados como coeficientes de uma série de cossenos para a função composta \(f(\cos\theta)\). Essa observação aproxima conceitualmente os métodos de Chebyshev dos métodos de Fourier: Fourier é natural para domínios periódicos, enquanto Chebyshev transfere parte dessa estrutura trigonométrica para o intervalo finito \([-1,1]\).
+
+Essa relação também explica a origem dos pontos de Chebyshev--Gauss--Lobatto,
+\[
+\xi_j=\cos\left(\frac{j\pi}{n}\right),
+\qquad j=0,1,\dots,n.
+\]
+Na variável angular \(\theta\), os pontos \(\theta_j=j\pi/n\) são igualmente espaçados. Entretanto, ao voltar para a variável física \(x=\cos\theta\), eles deixam de ser uniformes e passam a se concentrar perto das extremidades \(-1\) e \(1\). Essa concentração não é um detalhe meramente geométrico: ela reduz oscilações indesejadas na interpolação polinomial e melhora o comportamento numérico próximo às bordas do intervalo. Por isso, esses pontos são a escolha padrão em muitos métodos de colocação de Chebyshev, especialmente em problemas de contorno, pois incluem os extremos do intervalo.
+
+Outra propriedade fundamental é a chamada propriedade minimax. Para \(n\geq1\), o polinômio \(T_n\) possui coeficiente líder \(2^{n-1}\). Portanto,
+\[
+\frac{T_n(x)}{2^{n-1}}
+\]
+é um polinômio mônico de grau \(n\). Entre todos os polinômios mônicos de grau \(n\), esse polinômio é aquele que minimiza o máximo do valor absoluto em \([-1,1]\). Em outras palavras, ele oscila de maneira controlada e com menor amplitude máxima possível dentro dessa classe. Essa propriedade está diretamente relacionada ao bom comportamento da interpolação de Chebyshev: os nós associados a esses polinômios distribuem o erro de maneira mais equilibrada no intervalo, evitando a amplificação excessiva que pode ocorrer em malhas uniformes de alta ordem.
+
+Do ponto de vista da IC, esses três elementos são essenciais: a identidade \(T_n(\cos\theta)=\cos(n\theta)\) aproxima Chebyshev de Fourier; os pontos de Chebyshev--Gauss--Lobatto fornecem os nós de colocação usados na discretização espacial; e a propriedade minimax ajuda a justificar a estabilidade e a eficiência da aproximação polinomial em domínios limitados.
+
+\subsection{Chebyshev e a aproximação espectral}
+
+No contexto desta IC, o interesse pelos polinômios de Chebyshev não é apenas teórico. Em domínios espaciais limitados, eles fornecem uma base global especialmente conveniente para aproximações espectrais, pois combinam ortogonalidade, recorrência simples e uma distribuição favorável de pontos de interpolação.
+
+Em particular, os pontos de Chebyshev--Gauss--Lobatto concentram-se mais intensamente nas extremidades do intervalo, o que melhora o comportamento de procedimentos de interpolação e diferenciação quando comparados a malhas uniformes. Por essa razão, os polinômios de Chebyshev aparecem de forma recorrente em métodos espectrais e pseudospectrais para equações diferenciais.
+
+Desse modo, a teoria desenvolvida neste capítulo cumpre um papel preparatório: ela fornece a base conceitual necessária para a construção, no capítulo seguinte, de métodos espectrais em domínios limitados, nos quais a variável espacial será tratada por meio de expansões e interpolações associadas aos polinômios de Chebyshev.

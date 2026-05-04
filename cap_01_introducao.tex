@@ -1,0 +1,45 @@
+\chapter{Introdução}
+
+\section{Motivação para o estudo de problemas periódicos}
+
+Muitos fenômenos modelados por equações diferenciais apresentam algum tipo de repetição temporal. Sistemas submetidos a forças, fontes, oscilações externas ou condições de contorno periódicas podem evoluir, após a dissipação dos efeitos transitórios, para um regime estacionário periódico. Nesse regime, a questão central não é apenas acompanhar a evolução a partir de um dado inicial, mas compreender a resposta ao longo de um ciclo completo, identificando amplitude, fase, padrões espaciais e estabilidade da solução.
+
+Essa motivação aparece em problemas clássicos, como vibrações mecânicas, oscilações forçadas e condução do calor. Na difusão térmica, por exemplo, uma excitação periódica na fronteira de um material pode gerar uma resposta periódica em seu interior, com decaimento de amplitude e defasagem em relação ao estímulo imposto. Esse tipo de comportamento justifica o uso de métodos capazes de representar oscilações recorrentes de forma global e precisa.
+
+Nesse contexto, as séries de Fourier surgem como ferramenta natural para representar a dependência temporal periódica. A decomposição em modos harmônicos permite escrever uma função periódica como superposição de componentes elementares associadas a frequências múltiplas de uma frequência fundamental. Quando o problema envolve também variáveis espaciais definidas em domínios limitados, métodos espectrais baseados em polinômios ortogonais, em especial os polinômios de Chebyshev, fornecem uma alternativa eficiente para a discretização espacial.
+
+A escolha dessas duas famílias de funções está de acordo com a filosofia geral dos métodos espectrais: a base deve ser escolhida de modo compatível com a geometria e com as propriedades do problema. Para problemas periódicos, funções trigonométricas são adequadas; para intervalos finitos, polinômios de Chebyshev são particularmente convenientes. Assim, em uma equação diferencial parcial com periodicidade temporal e domínio espacial limitado, a combinação Fourier--Chebyshev é uma escolha natural.
+
+\section{Proposta metodológica}
+
+Neste trabalho, investiga-se a combinação entre séries de Fourier na variável temporal e colocação espectral de Chebyshev na variável espacial para a aproximação de soluções periódicas de equações diferenciais. A ideia central é incorporar a periodicidade diretamente na forma da solução aproximada. Em vez de avançar no tempo por passos sucessivos, procura-se uma representação global no período:
+\[
+u(t)\approx \sum_{k=-K}^{K}\widehat{u}_k e^{ik\omega t},
+\qquad
+\omega=\frac{2\pi}{T}.
+\]
+Nessa formulação, a derivada temporal atua de modo simples sobre cada harmônico, pois
+\[
+\frac{d}{dt}e^{ik\omega t}=ik\omega e^{ik\omega t}.
+\]
+Consequentemente, operadores diferenciais temporais são transformados em operações algébricas sobre os coeficientes de Fourier.
+
+Após a discretização espacial por Chebyshev, uma equação diferencial parcial linear periódica no tempo assume a forma semidiscreta
+\[
+U'(t)=AU(t)+b(t),
+\]
+em que a matriz \(A\) representa o operador espacial discreto e \(b(t)\) representa a forçante avaliada nos pontos de colocação. Expandindo \(U(t)\) e \(b(t)\) em séries de Fourier, obtém-se, para cada modo \(k\), o sistema linear
+\[
+(ik\omega I-A)\widehat{U}_k=\widehat{b}_k.
+\]
+Assim, o problema periódico é reduzido a uma família finita de sistemas lineares independentes, um para cada modo temporal considerado.
+
+Essa estrutura é explorada em duas etapas. Primeiro, valida-se a parte temporal do método em um sistema linear periódico de dimensão \(2\times2\), com solução exata conhecida. Em seguida, a mesma ideia é aplicada à equação do calor bidimensional, em que o operador espacial é discretizado por colocação de Chebyshev e o tempo é tratado por Fourier. Essa organização permite verificar separadamente o núcleo temporal do algoritmo e, depois, sua integração com a discretização espacial.
+
+\section{Escopo e organização do trabalho}
+
+O foco principal desta IC está em problemas lineares, suaves e periódicos no tempo. Essa escolha é adequada para estabelecer a fundamentação e validar a implementação, pois permite comparar a solução numérica com soluções fabricadas conhecidas. Fenômenos como aliasing, Gibbs e perda de regularidade são discutidos como aspectos relevantes dos métodos espectrais, especialmente em extensões futuras para problemas não-lineares ou soluções pouco regulares, mas não constituem o centro dos experimentos numéricos realizados.
+
+O trabalho está organizado da seguinte forma. No Capítulo 2, apresentam-se noções sobre polinômios ortogonais, com ênfase nos polinômios de Chebyshev, seus pontos notáveis e sua utilidade em aproximações espectrais em intervalos finitos. No Capítulo 3, desenvolvem-se os fundamentos de séries de Fourier, incluindo periodicidade, convergência, forma complexa e interpretação em \(L^2\). No Capítulo 4, constrói-se a formulação espectral adotada, conectando Galerkin, colocação, Fourier no tempo, Chebyshev no espaço e a formulação combinada Fourier--Chebyshev. No Capítulo 5, apresentam-se os resultados numéricos obtidos nos testes de validação. Por fim, o Apêndice reúne os códigos comentados utilizados nas simulações.
+
+Dessa forma, a introdução, a fundamentação teórica, os algoritmos e os resultados seguem a mesma linha metodológica: usar Fourier para representar a periodicidade temporal, Chebyshev para tratar o domínio espacial limitado e sistemas lineares modais para calcular a solução periódica aproximada.

@@ -1,0 +1,55 @@
+
+\chapter{Códigos comentados utilizados nas simulações}
+
+Este apêndice reúne as versões comentadas dos códigos utilizados para gerar os resultados numéricos. O objetivo não é substituir a formulação matemática apresentada nos capítulos anteriores, mas registrar a implementação de modo transparente. Os comentários foram escritos para evidenciar a correspondência entre cada etapa computacional e a fundamentação desenvolvida no relatório: expansão de Fourier no tempo, cálculo dos coeficientes por FFT, resolução dos sistemas modais, discretização de Chebyshev no espaço, cálculo do erro e avaliação do resíduo.
+
+\section{Código para o sistema linear periódico \texorpdfstring{\(2\times2\)}{2x2}}
+
+O Código~\ref{lst:sistema2x2} implementa o problema de validação finito-dimensional. Nesse caso, a matriz \(A\) já é dada e o algoritmo atua diretamente sobre o sistema
+\[
+U'(t)=AU(t)+b(t).
+\]
+A finalidade desse código é testar isoladamente a etapa temporal baseada em Fourier antes de aplicá-la ao sistema semidiscreto proveniente da equação do calor.
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Código comentado para o sistema linear periódico \(2\times2\).},label={lst:sistema2x2}]{codigos/teste_sistema2x2_fourier_COMENTADO_ASCII.m}
+
+\section{Código Fourier--Chebyshev para a equação do calor bidimensional}
+
+O Código~\ref{lst:calor2d} implementa a formulação Fourier--Chebyshev para a equação do calor bidimensional periódica no tempo. A diferença fundamental em relação ao código anterior é que, neste caso, a matriz \(A\) não é escolhida livremente: ela é construída pela discretização espectral do Laplaciano espacial usando matrizes de diferenciação de Chebyshev e produtos de Kronecker. Após essa etapa, reaparece a mesma estrutura
+\[
+U'(t)=AU(t)+b(t),
+\]
+e aplica-se novamente o procedimento em modos de Fourier.
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Código comentado para a equação do calor 2D com Chebyshev no espaço e Fourier no tempo.},label={lst:calor2d}]{codigos/EqCalor2D_timeperiodic_SPECTRAL_COMENTADO.m}
+
+\section{Rotina genérica para sistemas lineares periódicos}
+
+O Código~\ref{lst:rotina-generica} apresenta uma versão genérica da rotina temporal por Fourier. Diferentemente do código de validação \(2\times2\), no qual a matriz \(A\) é fixada por um exemplo específico, esta rotina recebe a matriz \(A\) e a função vetorial periódica \(b(t)\) como entradas. A função fornecida pelo usuário deve ser compatível com a dimensão de \(A\), isto é, se \(A\in\mathbb{R}^{n\times n}\), então \(b(t)\in\mathbb{R}^n\). Além disso, espera-se que \(b(t)\) seja \(T\)-periódica e suficientemente regular para que a aproximação por Fourier seja eficiente.
+
+A rotina também calcula o resíduo
+\[
+R_K(t)=U_K'(t)-AU_K(t)-b(t),
+\]
+bem como o maior número de condição dos sistemas modais. Esses diagnósticos são importantes para verificar se a solução aproximada satisfaz a equação diferencial e se os sistemas lineares associados aos modos de Fourier estão bem condicionados.
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Rotina genérica comentada para sistemas lineares periódicos.},label={lst:rotina-generica}]{codigos/periodic_solution_fourier_generico.m}
+
+\section{Exemplo de uso da rotina genérica}
+
+O Código~\ref{lst:exemplo-generico} mostra como utilizar a rotina genérica no caso do sistema \(2\times2\). Nesse exemplo, o usuário fornece a matriz \(A\), a função periódica \(b(t)\) e uma solução exata para validação. Essa estrutura permite reaproveitar a mesma rotina para outros sistemas lineares periódicos, alterando apenas os dados de entrada.
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Exemplo de uso da rotina genérica no sistema \(2\times2\).},label={lst:exemplo-generico}]{codigos/exemplo_uso_periodic_solution_fourier_generico.m}
+
+
+\section{Experimento complementar sobre regularidade em Fourier}
+
+O Código~\ref{lst:regularidade-fourier} apresenta um experimento complementar utilizado para ilustrar a relação entre regularidade da função e convergência espectral. A função suave \(u(t)=e^{\cos t}\) é comparada com a função menos regular \(u(t)=|\sin t|\), evidenciando que funções mais suaves tendem a apresentar decaimento mais rápido dos coeficientes e, consequentemente, melhor comportamento espectral.
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Experimento complementar sobre regularidade e convergência de Fourier.},label={lst:regularidade-fourier}]{codigos/experimentos_regularidade_fourier_COMENTADO_ASCII.m}
+
+\section{Script para geração das figuras}
+
+O Código~\ref{lst:gerar-figuras} reúne os comandos utilizados para gerar as figuras chamadas no Capítulo 5. Ele salva os arquivos gráficos na pasta \texttt{figuras/}, mantendo os nomes usados nos comandos \texttt{\textbackslash includegraphics}. Esse script também registra a distinção entre o erro máximo absoluto e o diagnóstico acumulado em norma \(L^1\).
+
+\lstinputlisting[style=codigoIC,language=Matlab,caption={Script para geração das figuras do relatório.},label={lst:gerar-figuras}]{codigos/gerar_figuras_IC.m}

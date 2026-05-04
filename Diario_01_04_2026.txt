@@ -1,0 +1,47 @@
+Diario: 01/04/2026
+
+. Equação do Calor u_t = Δu + f em (-1,1) x (-1,1)
+
+. Condições de contorno homogêneas de Dirichlet na fronteira
+  e a condição de periodicidade, com período T = 2 pi no tempo.
+
+. Idéia central: resolver 
+
+  (i k ω I - A) \hat{u}_k = \hat{b}_k para k=-K,...,K
+  
+  onde \hat{b}_k = FFT(b)/N e a solução aproximada é
+  obtida da transformada inversa
+  
+  u(t) = Σ \hat{u}_k exp(i k ω t)
+
+
+. Funções empregadas na validação:
+
+aux1 = pi^2*sin(pi*cos(pi*y))*cos(t);
+      aux2 = pi*cos(pi*x).*cos(pi*cos(pi*x));
+      aux3 = pi^2*(sin(pi*x).^2).*sin(pi*cos(pi*x));
+      u_xx = aux1.*(aux2 + aux3);
+      aux11 = pi^2*sin(pi*cos(pi*x)).*cos(t);
+      aux22 = pi*cos(pi*y).*cos(pi*cos(pi*y));
+      aux33 = pi^2*(sin(pi*y).^2).*sin(pi*cos(pi*y));
+      u_yy = aux11.*(aux22 + aux33);
+      u_t = (sin(pi * cos(pi * x)) .* sin(pi * cos(pi * y)))* sin(t);
+      lap_u = u_xx + u_yy;
+      b_exata = u_t - lap_u;
+      u = sin(pi * cos(pi * xx)) .* sin(pi * cos(pi * yy)) * (-cos(tt));
+      
+Resultados:
+.------------------------------------------------.
+|NCheb   NFourier   No. Condição     Erro_Maximo |
+|------------------------------------------------|
+|8       8          179              387.5       |
+|------------------------------------------------|
+|16      8          2.624e+3         8.5         | 
+|------------------------------------------------|
+|32      8          4.1097e+04       2.1e-03     |
+|------------------------------------------------|
+|60      8          5.0538e+05       5.2e-11     |
+|------------------------------------------------|                         
+|80      8          1.6e+06          2.1e-10     |
+'------------------------------------------------'
+
