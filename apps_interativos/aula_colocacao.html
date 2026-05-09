@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aula: Colocação espectral</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f4;color:#202124}header,main{width:min(1100px,calc(100% - 32px));margin:auto}
+    header{padding:28px 0 12px}main{display:grid;gap:16px;margin-bottom:44px}.panel{background:#fff;border:1px solid #d8d8cf;border-radius:8px;padding:18px}
+    h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px}p{line-height:1.5;color:#555b53}.grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+    canvas{width:100%;height:330px;border:1px solid #d8d8cf;border-radius:8px;background:#fff}input{width:100%;accent-color:#0b6bcb}.formula{font-family:"Courier New",monospace;background:#fbfbf8;border:1px solid #d8d8cf;border-radius:6px;padding:12px}.hint{background:#eef5fb;border-left:4px solid #0b6bcb;padding:10px;border-radius:6px}a{color:#0b6bcb}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><a href="index.html">← aulas</a><h1>Colocação espectral</h1><p>Em vez de satisfazer a equação em todos os pontos, impomos a equação em nós escolhidos.</p></header>
+<main>
+  <section class="panel grid">
+    <div>
+      <label>Nós internos <input id="N" type="range" min="3" max="14" value="6"><strong id="nl"></strong></label>
+      <p class="hint">Cada ponto interno vira uma equação. Juntando tudo, aparece uma matriz.</p>
+      <div class="formula" id="formula"></div>
+    </div>
+    <canvas id="cv" width="900" height="330"></canvas>
+  </section>
+  <section class="panel"><p>No calor 2D, fazemos isso em x e y. O Laplaciano discreto vira \(A = I ⊗ D^2 + D^2 ⊗ I\). Depois Fourier no tempo resolve \((ikωI-A)U_k=b_k\).</p></section>
+</main>
+<script>
+const N=document.getElementById("N"),cv=document.getElementById("cv");
+function draw(){let n=+N.value;document.getElementById("nl").textContent=`${n} pontos internos`;document.getElementById("formula").textContent=`equações: R(x_j)=0 para j=1,...,${n}`;
+let c=cv.getContext("2d"),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);c.strokeStyle="#d8d8cf";c.lineWidth=2;c.beginPath();c.moveTo(60,h/2);c.lineTo(w-60,h/2);c.stroke();
+for(let j=0;j<n;j++){let px=80+j*(w-160)/(n-1);c.fillStyle="#00856f";c.beginPath();c.arc(px,h/2,6,0,2*Math.PI);c.fill();c.fillStyle="#202124";c.fillText(`R=0`,px-12,h/2-18)}
+c.fillStyle="#9a5a00";c.fillText("fronteira",25,h/2+28);c.fillText("fronteira",w-85,h/2+28);c.fillStyle="#202124";c.fillText("A solução aproximada é forçada a obedecer a equação nesses nós.",60,42)}
+N.oninput=draw;draw();
+</script>
+</body></html>

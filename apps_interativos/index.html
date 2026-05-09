@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aulas interativas da IC</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f4;color:#202124}
+    header{background:#fff;border-bottom:1px solid #d8d8cf;padding:32px clamp(18px,5vw,56px)}
+    main{width:min(1040px,calc(100% - 32px));margin:26px auto 54px}
+    h1{font-size:clamp(30px,5vw,48px);margin:0 0 8px}
+    p{line-height:1.5;color:#62665f}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
+    a.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #d8d8cf;border-radius:8px;padding:18px;min-height:160px}
+    a.card:hover{border-color:#0b6bcb;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .k{color:#0b6bcb;font-weight:700;margin-bottom:8px}
+    .small{font-size:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Aulas interativas da IC</h1>
+    <p>Uma trilha visual para entender a teoria do projeto: polinômios ortogonais, Fourier, Chebyshev, Fourier espectral e colocação.</p>
+  </header>
+  <main>
+    <p class="small">Sugestão: siga na ordem. Cada aula ensina uma peça que aparece depois nos códigos e no relatório.</p>
+    <div class="grid">
+      <a class="card" href="aula_polinomios_ortogonais.html">
+        <div class="k">1. Polinômios ortogonais</div>
+        <p>Entenda produto interno, peso e a ideia de funções perpendiculares.</p>
+      </a>
+      <a class="card" href="aula_fourier.html">
+        <div class="k">2. Séries de Fourier</div>
+        <p>Veja como modos seno/cosseno reconstruem uma função periódica.</p>
+      </a>
+      <a class="card" href="aula_chebyshev.html">
+        <div class="k">3. Chebyshev</div>
+        <p>Explore pontos de Chebyshev e por que eles se concentram nas bordas.</p>
+      </a>
+      <a class="card" href="aula_fourier_espectral.html">
+        <div class="k">4. Fourier espectral</div>
+        <p>Veja por que a derivada no tempo vira multiplicação por ikω.</p>
+      </a>
+      <a class="card" href="aula_colocacao.html">
+        <div class="k">5. Colocação espectral</div>
+        <p>Entenda como impor a equação nos nós transforma uma EDP em matriz.</p>
+      </a>
+      <a class="card" href="fourier_chebyshev_lab.html">
+        <div class="k">Laboratório geral</div>
+        <p>Mapa interativo do projeto inteiro: Fourier + Chebyshev + validação.</p>
+      </a>
+      <a class="card" href="aula_codigo_modal.html">
+        <div class="k">6. O código por dentro</div>
+        <p>Leia o algoritmo modal como uma sequência: amostrar, FFT, resolver modos, reconstruir e validar.</p>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

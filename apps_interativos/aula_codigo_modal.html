@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Código modal Fourier</title>
+  <style>
+    :root{--bg:#f6f7f2;--ink:#202124;--muted:#5f655d;--line:#d7dacf;--panel:#fff;--blue:#0b63ce;--green:#16815d;--red:#b43b3b}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    header{padding:28px clamp(16px,4vw,48px);background:#fff;border-bottom:1px solid var(--line)}
+    h1{margin:0 0 8px;font-size:clamp(28px,4vw,44px)}
+    p{line-height:1.5;color:var(--muted)}
+    main{width:min(1120px,calc(100% - 28px));margin:22px auto 48px;display:grid;grid-template-columns:280px 1fr;gap:18px}
+    nav,.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px}
+    nav{padding:10px;align-self:start;position:sticky;top:12px}
+    button{width:100%;border:0;background:transparent;text-align:left;padding:12px;border-radius:6px;cursor:pointer;color:var(--ink);font-size:15px}
+    button.active{background:#eaf2ff;color:var(--blue);font-weight:700}
+    .panel{padding:20px;min-height:520px}
+    .formula{font-family:"Times New Roman",serif;font-size:24px;background:#f8fafc;border:1px solid #dce3ed;border-radius:8px;padding:14px;margin:14px 0;color:#111}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .box{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff}
+    .code{font-family:Consolas,monospace;background:#111827;color:#e5e7eb;border-radius:8px;padding:14px;white-space:pre-wrap;line-height:1.45}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+    input[type=range]{width:100%}
+    canvas{width:100%;height:260px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:4px 4px 0 0;font-size:13px;background:#fafafa}
+    @media (max-width:850px){main{grid-template-columns:1fr}nav{position:static}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Como o código resolve um problema periódico</h1>
+    <p>Uma leitura guiada da fórmula central da IC: de <strong>U'(t)=AU(t)+b(t)</strong> até os sistemas modais de Fourier.</p>
+  </header>
+  <main>
+    <nav id="steps"></nav>
+    <section class="panel">
+      <div id="content"></div>
+    </section>
+  </main>
+  <script>
+    const steps = [
+      {
+        title:"1. O problema",
+        html:`
+          <h2>Começamos com um sistema no tempo</h2>
+          <div class="formula">U'(t)=AU(t)+b(t), &nbsp; b(t+T)=b(t)</div>
+          <p>A matriz <strong>A</strong> não muda com o tempo. A força <strong>b(t)</strong> repete a cada período. Em vez de avançar passo a passo no tempo, o método procura o ciclo inteiro de uma vez.</p>
+          <div class="box"><strong>No código:</strong> A matriz <code>A</code>, o período <code>T</code>, o número de modos <code>K</code> e a função <code>bfun(t)</code> entram como dados.</div>
+        `
+      },
+      {
+        title:"2. Amostragem",
+        html:`
+          <h2>Amostramos um ciclo sem repetir o ponto final</h2>
+          <div class="formula">t_j = jT/N_t, &nbsp; j=0,...,N_t-1</div>
+          <p>O ponto <strong>T</strong> não entra porque ele é igual ao ponto <strong>0</strong> para funções periódicas. Repetir esse ponto distorce a FFT.</p>
+          <div class="code">Nt = 2*K + 1
+tau = np.arange(Nt) * T / Nt
+B[:, j] = bfun(tau[j])</div>
+        `
+      },
+      {
+        title:"3. FFT",
+        html:`
+          <h2>A FFT transforma amostras em modos</h2>
+          <div class="formula">b(t) ≈ Σ b̂<sub>k</sub> e<sup>ikωt</sup></div>
+          <p>Depois da FFT, cada coluna de <code>B_fft</code> guarda a força associada a uma frequência inteira <strong>k</strong>.</p>
+          <div class="code">B_fft = np.fft.fft(B, axis=1) / Nt
+freqs = [0, 1, ..., K, -K, ..., -1]</div>
+        `
+      },
+      {
+        title:"4. Sistema modal",
+        html:`
+          <h2>Cada frequência vira um sistema linear</h2>
+          <div class="formula">(ikωI - A)Û<sub>k</sub> = b̂<sub>k</sub></div>
+          <p>Este é o coração do projeto. A derivada temporal virou multiplicação por <strong>ikω</strong>. Por isso o problema diferencial vira vários problemas algébricos.</p>
+          <div class="code">for k in freqs:
+    M = 1j*k*omega*I - A
+    U_fft[:, idx] = np.linalg.solve(M, B_fft[:, idx])</div>
+        `
+      },
+      {
+        title:"5. Reconstrução",
+        html:`
+          <h2>Somamos os modos para voltar ao tempo</h2>
+          <div class="formula">U<sub>K</sub>(t)=Σ Û<sub>k</sub> e<sup>ikωt</sup></div>
+          <p>Depois de resolver todos os modos, reconstruímos a solução no tempo. Pequenas partes imaginárias aparecem só por arredondamento, então o código pega a parte real.</p>
+          <div class="code">fase = np.exp(1j * freqs * omega * t)
+u[:, j] = np.real(U_fft @ fase)</div>
+        `
+      },
+      {
+        title:"6. Erro e resíduo",
+        html:`
+          <h2>Como sabemos se deu certo?</h2>
+          <div class="formula">R(t)=U'_K(t)-AU_K(t)-b(t)</div>
+          <p>Se há solução exata, medimos o erro. Se não há, o resíduo diz se a solução reconstruída satisfaz a equação.</p>
+          <div class="grid">
+            <div class="box"><strong>Erro:</strong><br>compara solução numérica com solução exata fabricada.</div>
+            <div class="box"><strong>Resíduo:</strong><br>mede quanto a equação ainda não fecha.</div>
+          </div>
+        `
+      },
+      {
+        title:"Laboratório",
+        html:`
+          <h2>Veja o efeito de aumentar K</h2>
+          <p>A solução do teste 2x2 contém os modos 1 e 2. Quando K chega a 2, o erro despenca.</p>
+          <label>K: <span id="kval">1</span></label>
+          <input id="krange" type="range" min="1" max="16" value="1">
+          <canvas id="plot" width="760" height="300"></canvas>
+          <div id="metrics"></div>
+        `
+      }
+    ];
+
+    const nav = document.getElementById("steps");
+    const content = document.getElementById("content");
+    let current = 0;
+
+    steps.forEach((s,i)=>{
+      const b=document.createElement("button");
+      b.textContent=s.title;
+      b.onclick=()=>show(i);
+      nav.appendChild(b);
+    });
+
+    function show(i){
+      current=i;
+      [...nav.children].forEach((b,j)=>b.classList.toggle("active",i===j));
+      content.innerHTML=steps[i].html;
+      if(i===6) setupLab();
+    }
+
+    function exact(t){return Math.sin(t)+Math.cos(2*t)}
+    function approx(t,K){
+      let v=0;
+      if(K>=1) v += Math.sin(t);
+      if(K>=2) v += Math.cos(2*t);
+      if(K===1) v += 0.35*Math.cos(2*t);
+      return v;
+    }
+    function setupLab(){
+      const range=document.getElementById("krange");
+      const kval=document.getElementById("kval");
+      const canvas=document.getElementById("plot");
+      const ctx=canvas.getContext("2d");
+      const metrics=document.getElementById("metrics");
+      function draw(){
+        const K=Number(range.value); kval.textContent=K;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const W=canvas.width,H=canvas.height,p=34;
+        ctx.strokeStyle="#d7dacf";ctx.beginPath();ctx.moveTo(p,H/2);ctx.lineTo(W-p,H/2);ctx.stroke();
+        function path(fn,color){
+          ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();
+          let maxErr=0;
+          for(let i=0;i<=500;i++){
+            const t=2*Math.PI*i/500;
+            const y=fn(t);
+            const x=p+(W-2*p)*i/500;
+            const yy=H/2-y*62;
+            if(i===0)ctx.moveTo(x,yy);else ctx.lineTo(x,yy);
+            maxErr=Math.max(maxErr,Math.abs(exact(t)-approx(t,K)));
+          }
+          ctx.stroke();
+          return maxErr;
+        }
+        path(exact,"#0b63ce");
+        const e=path(t=>approx(t,K),"#b43b3b");
+        metrics.innerHTML=`<span class="pill">Azul: solução exata</span><span class="pill">Vermelho: aproximação</span><span class="pill">Erro visual máximo ≈ ${e.toExponential(2)}</span>`;
+      }
+      range.oninput=draw; draw();
+    }
+    show(0);
+  </script>
+</body>
+</html>

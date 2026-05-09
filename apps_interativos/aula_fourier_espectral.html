@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aula: Fourier espectral</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f4;color:#202124}header,main{width:min(1000px,calc(100% - 32px));margin:auto}
+    header{padding:28px 0 12px}main{display:grid;gap:16px;margin-bottom:44px}.panel{background:#fff;border:1px solid #d8d8cf;border-radius:8px;padding:18px}
+    h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px}p{line-height:1.5;color:#555b53}.grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+    input{width:100%;accent-color:#0b6bcb}.formula{font-family:"Courier New",monospace;background:#fbfbf8;border:1px solid #d8d8cf;border-radius:6px;padding:12px;margin-top:10px}.box{border:1px solid #d8d8cf;border-radius:8px;padding:14px}.accent{color:#0b6bcb;font-weight:700}a{color:#0b6bcb}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><a href="index.html">← aulas</a><h1>Fourier espectral</h1><p>A mágica operacional: derivar no tempo vira multiplicar por \(ik\omega\).</p></header>
+<main>
+  <section class="panel grid">
+    <div>
+      <label>Modo k <input id="k" type="range" min="-8" max="8" value="2"><strong id="kl"></strong></label>
+      <label>Período T <input id="T" type="range" min="1" max="12" value="6"><strong id="tl"></strong></label>
+    </div>
+    <div class="box">
+      <p>Modo temporal:</p><div class="formula" id="mode"></div>
+      <p>Derivada:</p><div class="formula" id="deriv"></div>
+      <p>Sistema modal do seu projeto:</p><div class="formula" id="system"></div>
+    </div>
+  </section>
+  <section class="panel"><p>Por isso o método evita avançar no tempo passo a passo. Ele resolve todos os modos do período diretamente.</p></section>
+</main>
+<script>
+const k=document.getElementById("k"),T=document.getElementById("T");
+function draw(){let kv=+k.value,Tv=+T.value,om=2*Math.PI/Tv;document.getElementById("kl").textContent=`k = ${kv}`;document.getElementById("tl").textContent=`T = ${Tv}, omega ≈ ${om.toFixed(3)}`;
+document.getElementById("mode").textContent=`exp(i * ${kv} * omega * t)`;
+document.getElementById("deriv").textContent=`d/dt = i * ${kv} * omega * exp(i * ${kv} * omega * t)`;
+document.getElementById("system").textContent=`(i * ${kv} * omega * I - A) U_${kv} = b_${kv}`;}
+k.oninput=draw;T.oninput=draw;draw();
+</script>
+</body></html>

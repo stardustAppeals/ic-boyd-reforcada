@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laboratorio Fourier-Chebyshev</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --ink: #202124;
+      --muted: #62665f;
+      --line: #d8d8cf;
+      --panel: #ffffff;
+      --accent: #0b6bcb;
+      --accent-2: #00856f;
+      --warn: #9a5a00;
+      --soft: #eef5fb;
+      --soft-2: #edf8f5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    header {
+      padding: 28px clamp(18px, 4vw, 48px) 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin-bottom: 8px;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 0;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 24px auto 48px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .value {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .formula {
+      background: #fbfbf8;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: "Courier New", monospace;
+      overflow-x: auto;
+      font-size: 14px;
+    }
+
+    .hint {
+      border-left: 4px solid var(--accent);
+      background: var(--soft);
+      padding: 10px 12px;
+      border-radius: 6px;
+      color: #17324d;
+      margin: 0;
+    }
+
+    .canvas-wrap {
+      min-width: 0;
+    }
+
+    canvas {
+      width: 100%;
+      height: 320px;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(42px, 1fr));
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .cell {
+      padding: 8px 4px;
+      border-radius: 4px;
+      text-align: center;
+      background: var(--soft-2);
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+      min-height: 120px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    @media (max-width: 860px) {
+      .grid, .two, .steps {
+        grid-template-columns: 1fr;
+      }
+
+      canvas { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Laboratorio Fourier-Chebyshev</h1>
+    <p class="subtitle">
+      Um mapa interativo do seu projeto: Fourier resolve a periodicidade no tempo,
+      Chebyshev organiza o espaco, e cada modo vira um sistema linear.
+    </p>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>1. Fourier no tempo: poucos modos podem reconstruir uma funcao periodica</h2>
+      <div class="grid">
+        <div class="controls">
+          <label>
+            Maior modo \(K\)
+            <input id="fourierK" type="range" min="0" max="12" value="1" />
+            <span class="value" id="fourierKValue">K = 1</span>
+          </label>
+          <label>
+            Tempo animado
+            <input id="phase" type="range" min="0" max="628" value="0" />
+            <span class="value" id="phaseValue">t = 0.00</span>
+          </label>
+          <p class="hint">
+            A curva cinza e a funcao exata \(f(t)=\sin(t)+\cos(2t)\).
+            A curva azul usa apenas os modos de \(-K\) ate \(K\).
+          </p>
+          <div class="formula" id="fourierFormula"></div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="fourierCanvas" width="900" height="360"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. O pulo central: uma EDO periodica vira varios sistemas lineares</h2>
+      <div class="two">
+        <div>
+          <p>
+            No sistema \(U'(t)=AU(t)+b(t)\), escrevemos \(U\) e \(b\) como somas de modos
+            \(e^{ik\omega t}\). A derivada de cada modo e simples:
+          </p>
+          <div class="formula">
+d/dt [ U_k exp(i k omega t) ] = i k omega U_k exp(i k omega t)
+          </div>
+          <p>
+            Depois de substituir na equacao e comparar modo por modo, aparece:
+          </p>
+          <div class="formula">
+(i k omega I - A) U_k = b_k
+          </div>
+        </div>
+        <div>
+          <label>
+            Modo \(k\)
+            <input id="modeK" type="range" min="-8" max="8" value="2" />
+            <span class="value" id="modeKValue">k = 2</span>
+          </label>
+          <div class="pill-row">
+            <span class="pill" id="omegaPill">omega = 1</span>
+            <span class="pill" id="matrixPill">A e fixa</span>
+            <span class="pill" id="modePill">modo atual: 2</span>
+          </div>
+          <div class="formula" id="modalEquation"></div>
+          <p class="hint">
+            Cada valor de \(k\) gera uma matriz diferente. Resolver o problema periodico
+            significa resolver todos esses sistemas e somar os modos de volta.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. Chebyshev no espaco: pontos concentrados nas bordas</h2>
+      <div class="grid">
+        <div class="controls">
+          <label>
+            Parametro \(N_{\mathrm{Cheb}}\)
+            <input id="chebN" type="range" min="4" max="32" value="8" step="1" />
+            <span class="value" id="chebNValue">N = 8</span>
+          </label>
+          <p class="hint">
+            A malha tem \(N+1\) pontos no intervalo \([-1,1]\). Como a condicao de
+            Dirichlet fixa as bordas, o codigo usa apenas os \(N-1\) pontos internos.
+          </p>
+          <div class="formula" id="chebFormula"></div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="chebCanvas" width="900" height="260"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. A historia completa do codigo do calor 2D</h2>
+      <div class="steps">
+        <div class="step">
+          <strong>Chebyshev</strong>
+          Discretiza \(x\) e \(y\), monta a matriz de segunda derivada e cria o Laplaciano discreto.
+        </div>
+        <div class="step">
+          <strong>Sistema</strong>
+          A EDP vira \(U'(t)=AU(t)+b(t)\), onde \(U(t)\) guarda os valores nos pontos internos.
+        </div>
+        <div class="step">
+          <strong>Fourier</strong>
+          Para cada modo \(k\), resolve-se \((ik\omega I-A)\widehat U_k=\widehat b_k\).
+        </div>
+        <div class="step">
+          <strong>Validacao</strong>
+          Compara-se com a solucao fabricada e mede-se erro, residuo e condicionamento.
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">NM=8: erro 3.87e+02</span>
+        <span class="pill">NM=16: erro 8.48e+00</span>
+        <span class="pill">NM=32: erro 2.10e-03</span>
+        <span class="pill">K=8 em todos os testes</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const fourierK = document.getElementById("fourierK");
+    const phase = document.getElementById("phase");
+    const fourierKValue = document.getElementById("fourierKValue");
+    const phaseValue = document.getElementById("phaseValue");
+    const fourierFormula = document.getElementById("fourierFormula");
+    const fourierCanvas = document.getElementById("fourierCanvas");
+    const modeK = document.getElementById("modeK");
+    const modeKValue = document.getElementById("modeKValue");
+    const modePill = document.getElementById("modePill");
+    const modalEquation = document.getElementById("modalEquation");
+    const chebN = document.getElementById("chebN");
+    const chebNValue = document.getElementById("chebNValue");
+    const chebFormula = document.getElementById("chebFormula");
+    const chebCanvas = document.getElementById("chebCanvas");
+
+    function exact(t) {
+      return Math.sin(t) + Math.cos(2 * t);
+    }
+
+    function approx(t, K) {
+      let y = 0;
+      if (K >= 1) y += Math.sin(t);
+      if (K >= 2) y += Math.cos(2 * t);
+      return y;
+    }
+
+    function drawAxes(ctx, w, h, ymin, ymax) {
+      ctx.strokeStyle = "#d8d8cf";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, h - 34);
+      ctx.lineTo(w - 18, h - 34);
+      ctx.moveTo(40, 18);
+      ctx.lineTo(40, h - 34);
+      ctx.stroke();
+
+      const y0 = h - 34 - ((0 - ymin) / (ymax - ymin)) * (h - 52);
+      ctx.strokeStyle = "#b9b9ad";
+      ctx.beginPath();
+      ctx.moveTo(40, y0);
+      ctx.lineTo(w - 18, y0);
+      ctx.stroke();
+    }
+
+    function drawFourier() {
+      const ctx = fourierCanvas.getContext("2d");
+      const w = fourierCanvas.width;
+      const h = fourierCanvas.height;
+      const K = Number(fourierK.value);
+      const t0 = Number(phase.value) / 100;
+      const ymin = -2.4;
+      const ymax = 2.4;
+
+      ctx.clearRect(0, 0, w, h);
+      drawAxes(ctx, w, h, ymin, ymax);
+
+      function X(t) { return 40 + (t / (2 * Math.PI)) * (w - 58); }
+      function Y(y) { return h - 34 - ((y - ymin) / (ymax - ymin)) * (h - 52); }
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#9a9a90";
+      ctx.beginPath();
+      for (let i = 0; i <= 500; i++) {
+        const t = (i / 500) * 2 * Math.PI;
+        const x = X(t), y = Y(exact(t));
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      ctx.strokeStyle = "#0b6bcb";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let i = 0; i <= 500; i++) {
+        const t = (i / 500) * 2 * Math.PI;
+        const x = X(t), y = Y(approx(t, K));
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = "#0b6bcb";
+      ctx.beginPath();
+      ctx.arc(X(t0), Y(approx(t0, K)), 6, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.fillStyle = "#202124";
+      ctx.font = "14px Arial";
+      ctx.fillText("0", 38, h - 14);
+      ctx.fillText("2pi", w - 42, h - 14);
+      ctx.fillText("cinza: exata", w - 180, 30);
+      ctx.fillText("azul: truncada", w - 180, 50);
+
+      fourierKValue.textContent = `K = ${K}`;
+      phaseValue.textContent = `t = ${t0.toFixed(2)}`;
+      fourierFormula.textContent =
+        K < 1 ? "K=0: apenas o modo constante. Aqui a aproximacao fica zero." :
+        K < 2 ? "K=1: captura sin(t), mas ainda perde cos(2t)." :
+        "K>=2: captura sin(t) e cos(2t); no teste 2x2 o erro cai para precisao de maquina.";
+    }
+
+    function drawMode() {
+      const k = Number(modeK.value);
+      modeKValue.textContent = `k = ${k}`;
+      modePill.textContent = `modo atual: ${k}`;
+      modalEquation.textContent =
+        `Para k = ${k}:  (i * ${k} * omega * I - A) U_${k} = b_${k}`;
+    }
+
+    function drawCheb() {
+      const ctx = chebCanvas.getContext("2d");
+      const w = chebCanvas.width;
+      const h = chebCanvas.height;
+      const N = Number(chebN.value);
+      const points = [];
+      for (let j = 0; j <= N; j++) points.push(Math.cos((j * Math.PI) / N));
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = "#d8d8cf";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(44, h / 2);
+      ctx.lineTo(w - 44, h / 2);
+      ctx.stroke();
+
+      for (const x of points) {
+        const px = 44 + ((x + 1) / 2) * (w - 88);
+        ctx.fillStyle = Math.abs(x) > 0.999 ? "#9a5a00" : "#00856f";
+        ctx.beginPath();
+        ctx.arc(px, h / 2, Math.abs(x) > 0.999 ? 7 : 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "#202124";
+      ctx.font = "14px Arial";
+      ctx.fillText("-1", 36, h / 2 + 28);
+      ctx.fillText("1", w - 48, h / 2 + 28);
+      ctx.fillText("pontos mais densos perto das bordas", 44, 34);
+
+      chebNValue.textContent = `N = ${N}`;
+      chebFormula.textContent =
+        `x_j = cos(j*pi/N), j=0,...,${N}. Total: ${N + 1} pontos; internos usados: ${N - 1}.`;
+    }
+
+    fourierK.addEventListener("input", drawFourier);
+    phase.addEventListener("input", drawFourier);
+    modeK.addEventListener("input", drawMode);
+    chebN.addEventListener("input", drawCheb);
+
+    drawFourier();
+    drawMode();
+    drawCheb();
+  </script>
+</body>
+</html>

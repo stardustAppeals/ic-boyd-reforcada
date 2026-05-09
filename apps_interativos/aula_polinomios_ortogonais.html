@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aula: Polinômios ortogonais</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f4;color:#202124}
+    header,main{width:min(1100px,calc(100% - 32px));margin:auto}
+    header{padding:28px 0 12px} main{display:grid;gap:16px;margin-bottom:44px}
+    .panel{background:#fff;border:1px solid #d8d8cf;border-radius:8px;padding:18px}
+    h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px} h2{margin:0 0 10px}
+    p{line-height:1.5;color:#555b53}.grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+    canvas{width:100%;height:340px;border:1px solid #d8d8cf;border-radius:8px;background:#fff}
+    label{display:grid;gap:8px;color:#555b53}input{accent-color:#0b6bcb}
+    .formula{font-family:"Courier New",monospace;background:#fbfbf8;border:1px solid #d8d8cf;border-radius:6px;padding:12px;overflow:auto}
+    .hint{background:#eef5fb;border-left:4px solid #0b6bcb;padding:10px 12px;border-radius:6px;color:#17324d}
+    a{color:#0b6bcb}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← aulas</a>
+    <h1>Polinômios ortogonais</h1>
+    <p>A ideia central: duas funções podem ser “perpendiculares” quando o produto interno integral entre elas é zero.</p>
+  </header>
+  <main>
+    <section class="panel grid">
+      <div>
+        <h2>Produto interno</h2>
+        <p>Escolha dois polinômios de Legendre. Eles são ortogonais em [-1,1] com peso 1.</p>
+        <label>Primeiro grau n
+          <input id="n" type="range" min="0" max="5" value="0">
+          <strong id="nLabel">n = 0</strong>
+        </label>
+        <label>Segundo grau m
+          <input id="m" type="range" min="0" max="5" value="1">
+          <strong id="mLabel">m = 1</strong>
+        </label>
+        <div class="formula" id="value"></div>
+        <p class="hint">Se n ≠ m, a integral fica próxima de zero. Isso é a ortogonalidade.</p>
+      </div>
+      <canvas id="plot" width="900" height="360"></canvas>
+    </section>
+    <section class="panel">
+      <h2>Por que isso importa?</h2>
+      <p>Quando uma família é ortogonal, cada coeficiente da expansão pode ser isolado por projeção. Essa é a mesma filosofia por trás das séries de Fourier e das expansões espectrais.</p>
+      <div class="formula">&lt;f,g&gt; = ∫ f(x) g(x) w(x) dx</div>
+    </section>
+  </main>
+  <script>
+    const P=[
+      x=>1,
+      x=>x,
+      x=>(3*x*x-1)/2,
+      x=>(5*x*x*x-3*x)/2,
+      x=>(35*x**4-30*x*x+3)/8,
+      x=>(63*x**5-70*x**3+15*x)/8
+    ];
+    const n=document.getElementById("n"),m=document.getElementById("m"),plot=document.getElementById("plot");
+    function integral(a,b){let s=0,N=1200,dx=2/N;for(let i=0;i<=N;i++){let x=-1+i*dx,w=(i==0||i==N)?0.5:1;s+=w*P[a](x)*P[b](x)}return s*dx}
+    function draw(){
+      let ni=+n.value,mi=+m.value;document.getElementById("nLabel").textContent=`n = ${ni}`;document.getElementById("mLabel").textContent=`m = ${mi}`;
+      document.getElementById("value").textContent=`<P_${ni}, P_${mi}> ≈ ${integral(ni,mi).toExponential(3)}`;
+      let c=plot.getContext("2d"),w=plot.width,h=plot.height;c.clearRect(0,0,w,h);
+      c.strokeStyle="#d8d8cf";c.beginPath();c.moveTo(40,h/2);c.lineTo(w-20,h/2);c.moveTo(40,20);c.lineTo(40,h-30);c.stroke();
+      function X(x){return 40+(x+1)/2*(w-70)} function Y(y){return h/2-y*(h/2-36)}
+      [[ni,"#0b6bcb"],[mi,"#00856f"]].forEach(([deg,col])=>{c.strokeStyle=col;c.lineWidth=3;c.beginPath();for(let i=0;i<=500;i++){let x=-1+2*i/500,y=P[deg](x);if(i)c.lineTo(X(x),Y(y));else c.moveTo(X(x),Y(y))}c.stroke()});
+      c.fillStyle="#202124";c.fillText("azul: P_n, verde: P_m",w-180,28)
+    }
+    n.oninput=draw;m.oninput=draw;draw();
+  </script>
+</body>
+</html>

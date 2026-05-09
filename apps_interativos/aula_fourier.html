@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aula: Fourier</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f4;color:#202124}header,main{width:min(1100px,calc(100% - 32px));margin:auto}
+    header{padding:28px 0 12px}main{display:grid;gap:16px;margin-bottom:44px}.panel{background:#fff;border:1px solid #d8d8cf;border-radius:8px;padding:18px}
+    h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px}p{line-height:1.5;color:#555b53}.grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+    canvas{width:100%;height:360px;border:1px solid #d8d8cf;border-radius:8px;background:#fff}input{width:100%;accent-color:#0b6bcb}
+    .formula{font-family:"Courier New",monospace;background:#fbfbf8;border:1px solid #d8d8cf;border-radius:6px;padding:12px}.hint{background:#eef5fb;border-left:4px solid #0b6bcb;padding:10px;border-radius:6px}a{color:#0b6bcb}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><a href="index.html">← aulas</a><h1>Séries de Fourier</h1><p>Uma função periódica pode ser vista como soma de ondas simples.</p></header>
+<main>
+  <section class="panel grid">
+    <div>
+      <label>Maior modo K <input id="K" type="range" min="0" max="12" value="1"><strong id="kl"></strong></label>
+      <label>Mistura do modo 3 <input id="a3" type="range" min="0" max="100" value="35"><strong id="a3l"></strong></label>
+      <p class="hint">A curva cinza é a função alvo. A azul é a soma truncada até K.</p>
+      <div class="formula" id="txt"></div>
+    </div>
+    <canvas id="cv" width="900" height="360"></canvas>
+  </section>
+  <section class="panel"><p>No seu projeto, Fourier é usado no tempo porque a solução procurada é periódica. O número K diz quantos modos temporais entram na aproximação.</p></section>
+</main>
+<script>
+const K=document.getElementById("K"),a3=document.getElementById("a3"),cv=document.getElementById("cv");
+function target(t,a){return Math.sin(t)+Math.cos(2*t)+a*Math.sin(3*t)}
+function appr(t,k,a){let y=0;if(k>=1)y+=Math.sin(t);if(k>=2)y+=Math.cos(2*t);if(k>=3)y+=a*Math.sin(3*t);return y}
+function draw(){let k=+K.value,a=+a3.value/100;document.getElementById("kl").textContent=`K = ${k}`;document.getElementById("a3l").textContent=`coeficiente = ${a.toFixed(2)}`;document.getElementById("txt").textContent=k<3?"A aproximação ainda perde algum modo presente na função.":"A aproximação já contém todos os modos da função alvo.";
+let c=cv.getContext("2d"),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);function X(t){return 40+t/(2*Math.PI)*(w-60)}function Y(y){return h/2-y*80}
+c.strokeStyle="#d8d8cf";c.beginPath();c.moveTo(40,h/2);c.lineTo(w-20,h/2);c.stroke();
+[[t=>target(t,a),"#999"],[t=>appr(t,k,a),"#0b6bcb"]].forEach(([f,col])=>{c.strokeStyle=col;c.lineWidth=3;c.beginPath();for(let i=0;i<=600;i++){let t=2*Math.PI*i/600;if(i)c.lineTo(X(t),Y(f(t)));else c.moveTo(X(t),Y(f(t)))}c.stroke()})}
+K.oninput=draw;a3.oninput=draw;draw();
+</script>
+</body></html>

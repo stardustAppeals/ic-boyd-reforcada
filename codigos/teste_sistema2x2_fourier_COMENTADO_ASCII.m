@@ -294,9 +294,10 @@ function [U, info] = periodic_solution_fourier_2x2(A, T, times, K)
         %     (i k omega I - A) U_hat_k = b_hat_k.
         M = 1i*k*omega*I - A;
 
-        % Atualiza o maior numero de condicao.
-        % Na IC, esse valor ajuda a interpretar possiveis perdas de precisao.
-        max_cond = max(max_cond, cond(M));
+        % Atualiza o maior numero de condicao em norma 1.
+        % Essa escolha mantem a mesma metrica usada na rotina generica
+        % e no codigo da equacao do calor 2D.
+        max_cond = max(max_cond, cond(M,1));
 
         % Resolve o sistema linear do modo k.
         % O operador \ e preferivel a inv(M)*B_hat(:,idx), pois e mais estavel.
