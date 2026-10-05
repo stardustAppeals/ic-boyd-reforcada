@@ -2,10 +2,61 @@
 
 Pesquisa feita em 04/10/2026, recuperada da sessão do Claude Code que estava com o título "Archive old chats" (agora renomeada para "Pesquisa UFSC Blumenau e IFC Camboriú/Sombrio (moradia, surf, grade)").
 
-As respostas estão na ordem em que foram dadas. O conteúdo é o mesmo; só tirei as perguntas que fechavam cada resposta. Os preços e anúncios são de 04/10/2026; confirme se ainda estão disponíveis.
+As respostas estão na ordem em que foram dadas. O conteúdo é o mesmo; só tirei as perguntas que fechavam cada resposta. Os preços e anúncios das seções 1 a 7 são de 04/10/2026. O resumo logo abaixo traz os valores conferidos em 05/10/2026.
+
+## Resumo atualizado em 05/10/2026
+
+Conferi de novo os anúncios em 05/10/2026, sem MGF e sem Deztop. Os valores são o total por mês informado no anúncio; luz e seguro incêndio são à parte, salvo quando indicado. Os links abaixo também estão escritos por extenso no fim de cada linha, para copiar e colar no navegador se não abrirem.
+
+### UFSC Blumenau (Rua Marechal Rondon, 880, em frente ao Terminal do Aterro)
+
+| Imóvel | Total/mês | Observação | Link |
+|---|---|---|---|
+| 1 quarto, 29 m², Rua 5 de Outubro (Salto do Norte) | R$ 1.360 | sem vaga, semimobiliado, ~15 min a pé | https://www.imoveis-sc.com.br/blumenau/alugar/apartamento/salto-do-norte/apartamento-com-1-dormitorio-para-alugar-29-m2-por-r-1-200-mes-salto-do-norte-blumenau-sc-731496.html |
+| 1 quarto, 29 m², Rua 5 de Outubro, 445 (Salto do Norte) | R$ 1.407 | com vaga, sacada com churrasqueira, ~15 min a pé | https://www.shsimoveis.com/imovel/apartamento-blumenau-1-quarto-29-m/AP1891-SHS |
+| Loft mobiliado, Rua Hermann Knasel, 325 (Salto do Norte) | R$ 1.790 | sem fiador, contrato mensal, água e gás inclusos, ~13 min a pé | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-com-garagem-sc-blumenau-salto-do-norte-35m2-RS1500/id-38329569/ |
+| 2 quartos mobiliado, 44 m², Residencial Brunnen (Itoupava Central) | R$ 1.515 | aceita pet, ônibus 80/81 | https://www.schorkimoveis.com.br/imovel/apartamento-blumenau-2-quartos-44-m/AP1817-SCHK |
+| **Novo:** 2 quartos, 56 m², Ed. Harapan, Rua Gustavo Zimmermann, 4691 (Itoupava Central) | R$ 1.888 | vaga coberta, elevador, piscina, academia | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-blumenau-itoupava-central-56m2-RS1350/id-46712592/ |
+| 2 quartos, 54 m², Rua Gustavo Zimmermann (Itoupava Central) | ~R$ 2.050 | novo, piscina, aceita pet pequeno | https://www.imoveis-sc.com.br/blumenau/alugar/apartamento/itoupava-central/apartamento-para-alugar-com-2-quartos-54m2-no-itoupava-central-blumenau-8973841.html |
+| 2 quartos, 65 m² (Salto do Norte) | R$ 2.043 | 3º andar, semimobiliado | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-blumenau-salto-do-norte-65m2-RS1700/id-42333106/ |
+| 2 quartos semimobiliado, a menos de 300 m da UFSC | R$ 2.150 + IPTU | aceita pet pequeno, vaga coberta | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-blumenau-salto-do-norte-94m2-RS1800/id-40480148/ |
+| 2 quartos, 90 m², Rua Berta Rossbach, 15 | R$ 1.600 | site que replica anúncios; confirme se inclui condomínio | https://rentberry.com/br/apartments/154545072-two-br-rua-berta-rossbach-15-blumenau-blumenau-sc-89065-220-brazil |
+
+O anúncio da Rua Eng. Udo Deeke, 1899 é antigo (previa liberar o imóvel em julho de 2025) e provavelmente está desatualizado.
+
+### IFC Camboriú (Rua Joaquim Garcia, Centro)
+
+| Imóvel | Total/mês | Observação | Link |
+|---|---|---|---|
+| 1 quarto novo, 30 m², Rua Goiás, 980 (Areias) | R$ 1.700 no 1º ano | R$ 1.800 com condomínio, com desconto de R$ 100 nos 12 primeiros meses; IPTU, água, luz e gás à parte; só seguro-fiança | https://ilainiimoveis.com.br/alugo-apartamento-1-dormitrio-bairro-areias-cambori |
+| 2 quartos térreo, Rua Centenário, 150 (Centro) | R$ 1.800 | IPTU incluso; luz e água à parte; só seguro-fiança | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-sc-camboriu-centro-RS1800/id-30296553/ |
+| 1 quarto semimobiliado, 47 m², Rua Victor Juvêncio Mafra (Centro) | R$ 2.306 | com vaga; a rua alagou em 2025 e 2026 | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-com-garagem-sc-camboriu-centro-60m2-RS1700/id-38234188/ |
+
+### IFC Sombrio (Av. Pref. Francisco Lummertz Júnior, 930, Januária)
+
+| Imóvel | Total/mês | Observação | Link |
+|---|---|---|---|
+| Kitnet, Rua Álvaro Silveira (Nova Brasília) | R$ 800 + luz | 12 min a pé; analisa pet pequeno | https://www.chavesnamao.com.br/imovel/kitnet-para-alugar-sc-sombrio-nova-brasilia-RS800/id-46832478/ |
+| Kitnet 55 m², Rua José Joaquim Cardoso, 675 (São Pedro) | R$ 800 | água inclusa, com vaga, ~22 min a pé | https://www.zaccaimoveis.com.br/imovel/3893709/kitnet-locacao-sombrio-sc-sao-pedro |
+| 2 quartos, Rua Caetano Lummertz, 564 (Centro) | R$ 900 | sem garagem, 20 min a pé | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-sc-sombrio-centro-RS850/id-38367948/ |
+| 2 quartos, Av. Getúlio Vargas, 816 (Nova Brasília) | R$ 1.300 | condomínio incluso, sacada | https://www.zaccaimoveis.com.br/imovel/4163709/apartamento-locacao-sombrio-sc-nova-brasilia |
+| Casa 3 quartos, Rua Pref. Fioravante Minatto, 173 (Januária) | R$ 1.300 | **baixou de R$ 1.400**; ~R$ 433 por pessoa dividindo em três | https://www.chavesnamao.com.br/imovel/casa-para-alugar-3-quartos-com-garagem-sc-sombrio-januaria-RS1400/id-31295010/ |
+
+### Contatos úteis
+
+- Curso de Matemática do IFC Sombrio: matematica.grad.sombrio@ifc.edu.br
+- Zacca Imobiliária (Sombrio): (48) 3533-1017
+- SHS Imóveis (Blumenau): (47) 3288-7750
+- Schork Imóveis (Blumenau): (47) 3337-1100
+- Ilaini Imóveis (Camboriú): (47) 3365-0772 · (47) 99917-7482
+- Metta Imobiliária (Camboriú): (47) 99644-3442
+- Cota de enchente em Blumenau: site ou app AlertaBlu, https://alertablu.blumenau.sc.gov.br/p/home
+
+---
 
 **Índice**
 
+0. [Resumo atualizado em 05/10/2026](#resumo-atualizado-em-05102026)
 1. [Bairros perto da UFSC Blumenau](#1-bairros-perto-da-ufsc-blumenau)
 2. [Imóveis para alugar perto da UFSC Blumenau](#2-imóveis-para-alugar-perto-da-ufsc-blumenau)
 3. [IFC Camboriú e IFC Sombrio, e comparação dos três campi](#3-ifc-camboriú-e-ifc-sombrio-e-comparação-dos-três-campi)
@@ -87,6 +138,8 @@ Achei boas opções, principalmente no **Salto do Norte**, a pé da UFSC, e na *
 4. **1 quarto, 50 m² – Rua Eng. Udo Deeke, 1899** · ~21 min a pé
    **R$ 1.550**. É maior, mas fica mais longe e não aceita animais. [Ver anúncio](https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-sc-blumenau-salto-do-norte-50m2-RS1500/id-32832213/) (Portal Imóveis)
 
+   > Em 05/10: o anúncio previa liberar o imóvel em julho de 2025; provavelmente está desatualizado.
+
 **Para dividir (2 quartos)**
 
 5. **2 quartos semimobiliado, a menos de 300 m da UFSC** (segundo o anúncio)
@@ -97,6 +150,8 @@ Achei boas opções, principalmente no **Salto do Norte**, a pé da UFSC, e na *
 
 7. **2 quartos, 90 m² – Rua Berta Rossbach, 15** · ~8 min a pé
    **~R$ 1.940**, o melhor preço por m² da lista. Só achei esse num site que replica anúncios, então confirme se ainda está disponível. [Ver anúncio](https://rentberry.com/br/apartments/154545072-two-br-rua-berta-rossbach-15-blumenau-blumenau-sc-89065-220-brazil)
+
+   > Em 05/10: o site agora mostra R$ 1.600 (publicado em 23/08/2026). Confirme se inclui condomínio.
 
 **Mais barato, com ônibus direto (Itoupava Central)**
 
@@ -161,6 +216,8 @@ Opções (Zacca Imobiliária):
 1. **Kitnet, Rua Álvaro da Silveira (Nova Brasília)** · 12 min a pé · **R$ 800** + luz · [anúncio](https://www.chavesnamao.com.br/imovel/kitnet-para-alugar-sc-sombrio-nova-brasilia-RS800/id-46832478/)
 2. **2 quartos, Rua Caetano Lummertz, 564 (Centro)** · 20 min a pé · **~R$ 900** com taxas · sem garagem · [anúncio](https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-sc-sombrio-centro-RS850/id-38367948/)
 3. **Casa 3 quartos, Rua Pref. Fioravante Minatto, 173** · 24 min a pé · **R$ 1.400**, cerca de R$ 470 por pessoa dividindo em três · [anúncio](https://www.chavesnamao.com.br/imovel/casa-para-alugar-3-quartos-com-garagem-sc-sombrio-januaria-RS1400/id-31295010/)
+
+> Em 05/10: o aluguel baixou para R$ 1.300 (~R$ 433 por pessoa dividindo em três).
 
 **Minha leitura**
 - **Menor custo: Sombrio.** Dá para viver com ~R$ 900 de aluguel e ir a pé, mas a cidade tem menos estágios, serviços e vida cultural.
