@@ -64,6 +64,7 @@ O anúncio da Rua Eng. Udo Deeke, 1899 é antigo (previa liberar o imóvel em ju
 5. [Surf perto de Sombrio para iniciante](#5-surf-perto-de-sombrio-para-iniciante)
 6. [Sombrio ou Blumenau?](#6-sombrio-ou-blumenau)
 7. [Grade e professores da Licenciatura em Matemática, IFC Sombrio](#7-grade-e-professores-da-licenciatura-em-matemática-ifc-sombrio)
+8. [Studios e kitnets no Salto do Norte e na Itoupava Norte (05/10/2026)](#8-studios-e-kitnets-no-salto-do-norte-e-na-itoupava-norte-05102026)
 
 ---
 
@@ -355,3 +356,36 @@ Todos trabalham em dedicação exclusiva, menos Carla Sofia, que é 40 h. Onde n
 **Atenção:** essa lista é de 2023 e pode ter mudado. A página do curso no site do campus é ainda mais antiga, de 2020. A direção de ensino do campus já trocou desde então. Para confirmar quem dá aula hoje, escreva para o e-mail do curso que aparece no projeto: matematica.grad.sombrio@ifc.edu.br.
 
 Fonte: [Projeto Pedagógico do Curso, IFC Sombrio, 2023](https://sig.ifc.edu.br/sigaa/verProducao?idProducao=2125020&key=73edd89f75cbfeea49ef09dd938869df)
+
+---
+
+## 8. Studios e kitnets no Salto do Norte e na Itoupava Norte (05/10/2026)
+
+Busca feita em 05/10/2026, sem MGF e sem Deztop. Os tempos a pé foram calculados por rota no OpenStreetMap até a UFSC (Rua Marechal Rondon, 880).
+
+**Como chegar da Itoupava Norte:** as opções desse bairro ficam no lado leste, perto da Rodoviária, a uns 5 km da UFSC (cerca de 1h10 a pé). Por isso dependem de ônibus. A linha 11 passa pela Rua 2 de Setembro e vai até o Terminal do Aterro, em frente à UFSC. A viagem leva uns 15 a 20 min. Nos dias úteis, sai do Aterro a cada 15 a 20 min no pico e a cada 35 a 45 min fora dele, com o último às 22h40. Com a passagem de estudante (R$ 2,75), ida e volta em 22 dias úteis dá uns R$ 120 por mês. Confira os horários no app da BluMob.
+
+### Salto do Norte (a pé)
+
+| Imóvel | Total/mês | A pé até a UFSC | Observação | Link |
+|---|---|---|---|---|
+| 1 quarto compacto, 40 m², Rua Dr. Pedro Zimmermann, 160 | R$ 1.400 + encargos | ~23 min (1,7 km) | semimobiliado, sem vaga; não aceita crianças nem pets | https://www.imoveis-sc.com.br/blumenau/alugar/apartamento/salto-do-norte/apartamento-semi-mobiliado-disponivel-para-locacao-no-bairro-salto-do-norte-em-blumenau-sc-1193993.html |
+| Kitnet 35 m² (endereço não informado, "próximo à UFSC") | R$ 1.430 + luz | não calculado | condomínio e água inclusos; sem vaga; Orbi Imóveis | https://www.chavesnamao.com.br/imovel/kitnet-para-alugar-sc-blumenau-salto-do-norte-35m2-RS1400/id-39694168/ |
+| 1 quarto 29 m², Rua 5 de Outubro (já estava na lista) | R$ 1.360 | ~15 min | sem vaga | https://www.imoveis-sc.com.br/blumenau/alugar/apartamento/salto-do-norte/apartamento-com-1-dormitorio-para-alugar-29-m2-por-r-1-200-mes-salto-do-norte-blumenau-sc-731496.html |
+| Loft mobiliado, Rua Hermann Knasel, 325 (já estava na lista) | R$ 1.790 | ~13 min | sem fiador; água e gás inclusos | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-com-garagem-sc-blumenau-salto-do-norte-35m2-RS1500/id-38329569/ |
+
+### Itoupava Norte (ônibus 11)
+
+| Imóvel | Total/mês | Até o ônibus | Observação | Link |
+|---|---|---|---|---|
+| Kitnets 45 m², Rua Vinte e Cinco de Janeiro, 100 (perto da Rodoviária) | R$ 1.050 + luz | ~6 min a pé até a Rua 2 de Setembro | semimobiliadas, vaga rotativa; várias unidades; anúncio atualizado em 27/04/2026; MHS Administradora, (47) 99268-9040 | https://mhsadministradora.com.br/kitnet-09 |
+| 1 quarto 53 m², Rua Dolores Duran, 226 | R$ 1.440 com água, luz e internet | ~7 min a pé até a Rua 2 de Setembro | sala e cozinha conjugadas, ar-condicionado, terraço privativo; sem vaga; só aceita gato; +R$ 100 para 2 moradores; Arbo Imóveis, (47) 99174-9838 | https://www.arboimoveis.com.br/imovel/apartamento/locacao/blumenau/sc/itoupava-norte/AP0572_IMOME |
+
+### Descartados
+
+- **Kitnet 35 m², Rua Henrique Mette (MKR, R$ 1.100):** o anúncio diz Salto do Norte, mas a rua fica na Itoupavazinha, a uns 6,8 km da UFSC (cerca de 1h30 a pé). https://www.chavesnamao.com.br/imovel/kitnet-para-alugar-com-garagem-sc-blumenau-salto-do-norte-30m2-RS1100/id-38049635/
+- **Kitnet 20 m² da Orbi no Salto do Norte:** o preço subiu de R$ 1.100 para R$ 1.500. É caro para 20 m².
+- **Kitnet 30 m², Rua Antônio Essig, 128 (R$ 1.700):** caro para o tamanho.
+- **Kitnets de R$ 650 a R$ 1.000 direto com o proprietário:** apareceram só na MGF e no Deztop, por isso ficaram de fora.
+
+**Enchente:** na Itoupava Norte, as ruas São Rafael e 1º de Janeiro estão entre as primeiras a alagar. Consulte a cota da Rua Vinte e Cinco de Janeiro e da Rua Dolores Duran no AlertaBlu antes de fechar: https://alertablu.blumenau.sc.gov.br/p/home
