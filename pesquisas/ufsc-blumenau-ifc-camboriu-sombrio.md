@@ -66,6 +66,7 @@ O anúncio da Rua Eng. Udo Deeke, 1899 é antigo (previa liberar o imóvel em ju
 7. [Grade e professores da Licenciatura em Matemática, IFC Sombrio](#7-grade-e-professores-da-licenciatura-em-matemática-ifc-sombrio)
 8. [Studios e kitnets no Salto do Norte e na Itoupava Norte (05/10/2026)](#8-studios-e-kitnets-no-salto-do-norte-e-na-itoupava-norte-05102026)
 9. [Centro, Velha e perto da FURB (05/10/2026)](#9-centro-velha-e-perto-da-furb-05102026)
+10. [IFC Camboriú: nova busca com links das imobiliárias (05/10/2026)](#10-ifc-camboriú-nova-busca-com-links-das-imobiliárias-05102026)
 
 ---
 
@@ -404,3 +405,18 @@ Centro e Velha custam mais e ficam mais longe da UFSC. Kitnet: R$ 1.150 a R$ 1.9
 | Kitnet 40 m², Rua Mariana Bronnemann, 517 (Velha) | R$ 1.350 (confirmar) | 9 min a pé do Terminal Proeb; 21 min da linha 10; Terrena (47) 99166-9155 | https://www.arboimoveis.com.br/imovel/kitnet/locacao/blumenau/sc/velha/KN0002_TERIMB |
 | Loft mobiliado 40 m², Centro (2'Ei, cód. 1182) | R$ 1.700 com água, luz e internet | pedem inquilino trabalhando; (47) 98888-3388 | https://rede2ei.com.br/imovel/1182/alugar/apartamento/blumenau/centro |
 | Kitnet mobiliada 28 m², Centro (2'Ei, cód. 1277) | R$ 1.876 | cara para o tamanho | https://rede2ei.com.br/imovel/1277/alugar/kitnet/blumenau/centro |
+
+---
+
+## 10. IFC Camboriú: nova busca com links das imobiliárias (05/10/2026)
+
+Tempos a pé calculados no OpenStreetMap até a entrada do campus na Rua Joaquim Garcia. Camboriú tem ônibus municipal (R$ 4,85), mas não confirmei linha que pare no IFC.
+
+| Imóvel | Total/mês | A pé | Observação | Link | Código e contato |
+|---|---|---|---|---|---|
+| Kitnet "container" 15 m², Rua Salvador, 313 (Areias) | R$ 1.300 + luz | 28 min | semimobiliada, cozinha planejada, varanda; só seguro-fiança | https://www.atlantidaimoveis.com.br/imovel/kitnet-camboriu-areias-1-quarto-aluguel-ref-4691/ | Ref. 4691 · Atlântida (47) 3365-2659 |
+| 1 quarto 30 m², Rua Pequim, 1615, apto 104 (Santa Regina) | R$ 1.600 com condomínio, água e lixo | 44 min | caução R$ 2.000 + 1º aluguel; sacada; vaga moto | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-sc-camboriu-santa-regina-RS1600/id-46173131/ | Ref. 746 · Ilaini (47) 99917-7482 |
+| 1 quarto novo 30 m², Rua Goiás, 980 (Areias) | R$ 1.700 no 1º ano | 30 min | condomínio incluso; só seguro-fiança | https://ilainiimoveis.com.br/alugo-apartamento-1-dormitrio-bairro-areias-cambori | Ref. 1288 · Ilaini |
+| 2 quartos térreo, Rua Centenário, 150 | R$ 1.800 (~R$ 900 cada) | 28 min | IPTU incluso; vaga moto | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-sc-camboriu-centro-RS1800/id-30296553/ | Metta (47) 99644-3442 |
+| 1 quarto 47 m², Rua Victor Juvêncio Mafra (Centro) | R$ 2.306 | 16 min | Ed. Amorim I; rua alagou em 2025 e 2026 | https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-1-quarto-com-garagem-sc-camboriu-centro-60m2-RS1700/id-38234188/ | Melhor Imóveis |
+| Kitnet 23 m², Rio Pequeno | R$ 1.500 com água, gás e internet | mais de 1h | só de bicicleta ou ônibus | https://ilainiimoveis.com.br/imoveis/aluguel | Ref. 1466 · Ilaini |
