@@ -65,6 +65,7 @@ O anúncio da Rua Eng. Udo Deeke, 1899 é antigo (previa liberar o imóvel em ju
 6. [Sombrio ou Blumenau?](#6-sombrio-ou-blumenau)
 7. [Grade e professores da Licenciatura em Matemática, IFC Sombrio](#7-grade-e-professores-da-licenciatura-em-matemática-ifc-sombrio)
 8. [Studios e kitnets no Salto do Norte e na Itoupava Norte (05/10/2026)](#8-studios-e-kitnets-no-salto-do-norte-e-na-itoupava-norte-05102026)
+9. [Centro, Velha e perto da FURB (05/10/2026)](#9-centro-velha-e-perto-da-furb-05102026)
 
 ---
 
@@ -389,3 +390,17 @@ Busca feita em 05/10/2026, sem MGF e sem Deztop. Os tempos a pé foram calculado
 - **Kitnets de R$ 650 a R$ 1.000 direto com o proprietário:** apareceram só na MGF e no Deztop, por isso ficaram de fora.
 
 **Enchente:** na Itoupava Norte, as ruas São Rafael e 1º de Janeiro estão entre as primeiras a alagar. Consulte a cota da Rua Vinte e Cinco de Janeiro e da Rua Dolores Duran no AlertaBlu antes de fechar: https://alertablu.blumenau.sc.gov.br/p/home
+
+---
+
+## 9. Centro, Velha e perto da FURB (05/10/2026)
+
+Centro e Velha custam mais e ficam mais longe da UFSC. Kitnet: R$ 1.150 a R$ 1.900. Apartamento de 1 quarto: em geral R$ 2.000 a R$ 3.400 com condomínio. O melhor ponto da região é perto da FURB, onde passa a linha 10 (Rua São Paulo → Terminal do Aterro, ~20 min; a cada 3 a 10 min no pico, 10 a 25 min fora dele; último saindo do Aterro às 22h40). A linha 300 liga o Terminal da Velha ao Aterro em ~25 min, mas só 24 vezes por dia. A linha 70 (Proeb → Aterro) tem só ~8 horários por dia.
+
+| Imóvel | Total/mês | Observação | Link |
+|---|---|---|---|
+| Studio mobiliado, Ed. Studio A. Estevam, Rua Antônio da Veiga, 364 (Victor Konder, ao lado da FURB) | a partir de R$ 1.290 + encargos | unidades de R$ 1.290, R$ 1.590 e R$ 1.800; linha 10 a 9 min a pé; Arbo (47) 99174-9838 | https://www.arboimoveis.com.br/imovel/studio/locacao/blumenau/sc/victor-konder/AP0117_IMOME |
+| Kitnet 30 m², Velha (endereço não informado) | R$ 1.143 + água, lixo e esgoto | Orbi (47) 3321-4200 | https://www.chavesnamao.com.br/imovel/kitnet-para-alugar-sc-blumenau-velha-RS1000/id-40798352/ |
+| Kitnet 40 m², Rua Mariana Bronnemann, 517 (Velha) | R$ 1.350 (confirmar) | 9 min a pé do Terminal Proeb; 21 min da linha 10; Terrena (47) 99166-9155 | https://www.arboimoveis.com.br/imovel/kitnet/locacao/blumenau/sc/velha/KN0002_TERIMB |
+| Loft mobiliado 40 m², Centro (2'Ei, cód. 1182) | R$ 1.700 com água, luz e internet | pedem inquilino trabalhando; (47) 98888-3388 | https://rede2ei.com.br/imovel/1182/alugar/apartamento/blumenau/centro |
+| Kitnet mobiliada 28 m², Centro (2'Ei, cód. 1277) | R$ 1.876 | cara para o tamanho | https://rede2ei.com.br/imovel/1277/alugar/kitnet/blumenau/centro |
